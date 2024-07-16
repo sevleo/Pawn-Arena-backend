@@ -68,7 +68,11 @@ wss.on("connection", (ws) => {
 // });
 
 // io.on("connection", (socket) => {
+//   console.log("a user connected");
+
+//   // Send the current position to the newly connected client
 //   socket.emit("position", position);
+
 //   socket.on("move", (data) => {
 //     switch (data) {
 //       case "left":
