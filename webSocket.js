@@ -6,46 +6,57 @@ function setupWebSocket(server) {
   let nextClientId = 0; // Initialize a counter for client IDs
   const clients = new Map();
 
-  var position = {
-    x: 200,
-    y: 200,
-  };
-
   wss.on("connection", (ws) => {
     const clientId = nextClientId++;
-    clients.set(clientId, ws); // Store the WebSocket connection with its ID
+    const clientData = { ws, position: { x: 200, y: 200 } };
+    clients.set(clientId, clientData); // Store the WebSocket connection with its ID
     console.log("a user connected");
     console.log(clients);
 
     // Send the current position to the newly connected client
-    ws.send(JSON.stringify({ type: "position", data: position }));
+    ws.send(JSON.stringify({ type: "position", data: clientData.position }));
 
     ws.on("message", (message) => {
       const msg = JSON.parse(message);
-
-      if (msg.type === "move") {
-        switch (msg.data) {
-          case "left":
-            position.x -= 5;
-            break;
-          case "right":
-            position.x += 5;
-            break;
-          case "up":
-            position.y -= 5;
-            break;
-          case "down":
-            position.y += 5;
-            break;
+      try {
+        if (msg.type === "move") {
+          switch (msg.data) {
+            case "left":
+              clientData.position.x -= 5;
+              break;
+            case "right":
+              clientData.position.x += 5;
+              break;
+            case "up":
+              clientData.position.y -= 5;
+              break;
+            case "down":
+              clientData.position.y += 5;
+              break;
+          }
         }
+
+        // Broadcast all clients' positions
+        const allPositions = Array.from(clients.entries()).map(
+          ([id, data]) => ({
+            clientId: id,
+            position: data.position,
+          })
+        );
+
+        console.log(allPositions);
+
+        // Broadcast the updated position to all clients
+        wss.clients.forEach((client) => {
+          if (client.readyState === WebSocket.OPEN) {
+            client.send(
+              JSON.stringify({ type: "position", data: allPositions })
+            );
+          }
+        });
+      } catch (error) {
+        console.error("Error processing message:", error);
       }
-
-      // Broadcast the updated position to all clients
-      wss.clients.forEach((client) => {
-        if (client.readyState === WebSocket.OPEN) {
-          client.send(JSON.stringify({ type: "position", data: position }));
-        }
-      });
     });
     ws.on("close", () => {
       console.log("user disconnected");
