@@ -35,20 +35,23 @@ function setupWebSocket(server) {
           if (clientData) {
             // Throttle updates based on RATE_LIMIT_INTERVAL
             if (now - clientData.lastUpdate >= RATE_LIMIT_INTERVAL) {
-              switch (msg.data) {
-                case "left":
-                  clientData.position.x -= SPEED;
-                  break;
-                case "right":
-                  clientData.position.x += SPEED;
-                  break;
-                case "up":
-                  clientData.position.y -= SPEED;
-                  break;
-                case "down":
-                  clientData.position.y += SPEED;
-                  break;
+              for (const direction of msg.data) {
+                switch (direction) {
+                  case "ArrowLeft":
+                    clientData.position.x -= SPEED;
+                    break;
+                  case "ArrowRight":
+                    clientData.position.x += SPEED;
+                    break;
+                  case "ArrowUp":
+                    clientData.position.y -= SPEED;
+                    break;
+                  case "ArrowDown":
+                    clientData.position.y += SPEED;
+                    break;
+                }
               }
+
               clientData.lastUpdate = now;
             }
           }
