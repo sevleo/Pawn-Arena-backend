@@ -1,5 +1,8 @@
 const WebSocket = require("ws");
 
+const SPEED = 8;
+const BOOST = 16;
+
 function setupWebSocket(server) {
   const wss = new WebSocket.Server({ server });
 
@@ -7,9 +10,10 @@ function setupWebSocket(server) {
   const clients = new Map();
 
   const RATE_LIMIT_INTERVAL = 20; // Rate limit interval in milliseconds (approximately 60 updates per second)
-  const SPEED = 8;
 
   wss.on("connection", (ws) => {
+    let speed = SPEED;
+
     // Assign clientId and clientData to new connection
     const clientId = nextClientId++;
     const clientData = {
@@ -38,22 +42,30 @@ function setupWebSocket(server) {
               for (const direction of msg.data) {
                 switch (direction) {
                   case "ArrowLeft":
-                    clientData.position.x -= SPEED;
+                    clientData.position.x -= speed;
                     break;
                   case "ArrowRight":
-                    clientData.position.x += SPEED;
+                    clientData.position.x += speed;
                     break;
                   case "ArrowUp":
-                    clientData.position.y -= SPEED;
+                    clientData.position.y -= speed;
                     break;
                   case "ArrowDown":
-                    clientData.position.y += SPEED;
+                    clientData.position.y += speed;
                     break;
                 }
               }
 
               clientData.lastUpdate = now;
             }
+          }
+        }
+
+        if (msg.type === "boost") {
+          if (msg.data === true) {
+            speed = BOOST;
+          } else {
+            speed = SPEED;
           }
         }
 
