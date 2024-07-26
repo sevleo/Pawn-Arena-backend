@@ -1,7 +1,7 @@
 const WebSocket = require("ws");
+const { BROADCAST_RATE_INTERVAL, MOVEMENT_SPEED } = require("./gameConstants");
 
-const SPEED = 8;
-const BOOST = 16;
+const handleGameMessage = require("./gameLogic");
 
 function setupWebSocket(server) {
   const wss = new WebSocket.Server({ server });
@@ -9,17 +9,21 @@ function setupWebSocket(server) {
   let nextClientId = 0; // Initialize a counter for client IDs
   const clients = new Map();
 
-  const RATE_LIMIT_INTERVAL = 20; // Rate limit interval in milliseconds (approximately 60 updates per second)
-
   wss.on("connection", (ws) => {
-    let speed = SPEED;
-
     // Assign clientId and clientData to new connection
     const clientId = nextClientId++;
     const clientData = {
       ws,
       position: { x: 200, y: 200 },
       lastUpdate: Date.now(),
+      speed: MOVEMENT_SPEED,
+      moving: {
+        movingRight: false,
+        movingLeft: false,
+        movingUp: false,
+        movingDown: false,
+      },
+      movementIntervalId: null,
     };
 
     // Add new connection to clients map
@@ -28,64 +32,17 @@ function setupWebSocket(server) {
     console.log(clients);
 
     sendPosition(ws, "initial position");
-    broadcastPositions();
+    setInterval(broadcastPositions, BROADCAST_RATE_INTERVAL); // Regular interval to broadcast positions
 
     ws.on("message", (message) => {
-      const msg = JSON.parse(message);
-      const now = Date.now();
-      try {
-        if (msg.type === "move") {
-          const clientData = clients.get(clientId);
-          if (clientData) {
-            // Throttle updates based on RATE_LIMIT_INTERVAL
-            if (now - clientData.lastUpdate >= RATE_LIMIT_INTERVAL) {
-              for (const direction of msg.data) {
-                switch (direction) {
-                  case "ArrowLeft":
-                    clientData.position.x -= speed;
-                    break;
-                  case "ArrowRight":
-                    clientData.position.x += speed;
-                    break;
-                  case "ArrowUp":
-                    clientData.position.y -= speed;
-                    break;
-                  case "ArrowDown":
-                    clientData.position.y += speed;
-                    break;
-                }
-              }
-
-              clientData.lastUpdate = now;
-            }
-          }
-        }
-
-        if (msg.type === "boost") {
-          if (msg.data === true) {
-            speed = BOOST;
-          } else {
-            speed = SPEED;
-          }
-        }
-
-        broadcastPositions();
-      } catch (error) {
-        console.error("Error processing message:", error);
-      }
+      handleGameMessage(JSON.parse(message), clientData);
     });
+
     ws.on("close", () => {
       console.log("user disconnected");
       clients.delete(clientId);
       console.log(clients);
     });
-
-    // Broadcast the updated position to all clients
-    function broadcastPositions() {
-      wss.clients.forEach((client) => {
-        sendPosition(client, "position");
-      });
-    }
 
     // Broadcast the updated position to a specific client
     function sendPosition(client, type) {
@@ -104,6 +61,21 @@ function setupWebSocket(server) {
           })
         );
       }
+    }
+
+    // Broadcast the updated position to all clients
+    function broadcastPositions() {
+      ws.send(
+        JSON.stringify({
+          type: "position",
+          data: {
+            allPositions: Array.from(clients.entries()).map(([id, data]) => ({
+              clientId: id,
+              position: data.position,
+            })),
+          },
+        })
+      );
     }
   });
 
