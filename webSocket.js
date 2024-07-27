@@ -1,5 +1,6 @@
 const WebSocket = require("ws");
-const { BROADCAST_RATE_INTERVAL, MOVEMENT_SPEED } = require("./gameConstants");
+const { BROADCAST_RATE_INTERVAL } = require("./gameConstants");
+const createClientData = require("./models/clientData");
 
 const handleGameMessage = require("./gameLogic");
 
@@ -12,19 +13,7 @@ function setupWebSocket(server) {
   wss.on("connection", (ws) => {
     // Assign clientId and clientData to new connection
     const clientId = nextClientId++;
-    const clientData = {
-      ws,
-      position: { x: 200, y: 200 },
-      lastUpdate: Date.now(),
-      speed: MOVEMENT_SPEED,
-      moving: {
-        movingRight: false,
-        movingLeft: false,
-        movingUp: false,
-        movingDown: false,
-      },
-      movementIntervalId: null,
-    };
+    const clientData = createClientData(ws);
 
     // Add new connection to clients map
     clients.set(clientId, clientData); // Store the WebSocket connection with its ID
