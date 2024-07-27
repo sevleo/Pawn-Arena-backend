@@ -1,9 +1,16 @@
-const MOVEMENT_SPEED = 3;
-const MOVEMENT_FREQUENCY_RATE = 10;
-const MOVEMENT_SPEED_BOOST = 6;
-const INITIAL_POSITION = { x: 200, y: 200 };
+// Canvas
+const CANVAS_WIDTH = 800;
+const CANVAS_HEIGHT = 800;
+
+// Websocket connection
 const BROADCAST_RATE_INTERVAL = 10;
 const THROTTLING_INTERVAL = 0;
+
+// Controllable unit
+const MOVEMENT_SPEED = 4;
+const MOVEMENT_FREQUENCY_RATE = 10;
+const MOVEMENT_SPEED_BOOST = 8;
+const INITIAL_POSITION = { x: 200, y: 200 };
 
 module.exports = {
   MOVEMENT_SPEED,
@@ -12,4 +19,6 @@ module.exports = {
   BROADCAST_RATE_INTERVAL,
   MOVEMENT_FREQUENCY_RATE,
   THROTTLING_INTERVAL,
+  CANVAS_WIDTH,
+  CANVAS_HEIGHT,
 };

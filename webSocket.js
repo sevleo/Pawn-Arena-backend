@@ -20,7 +20,7 @@ function setupWebSocket(server) {
     console.log("a user connected");
     console.log(clients);
 
-    sendPosition(ws, "initial position");
+    sendPosition(ws, "initial position"); // First communication to client to let them know their clientId
     setInterval(broadcastPositions, BROADCAST_RATE_INTERVAL); // Regular interval to broadcast positions
 
     ws.on("message", (message) => {
