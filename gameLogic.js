@@ -54,8 +54,8 @@ function updateMovementIntervals(clientData) {
 
     // Normalize the speed for diagonal movement
     if (xChange !== 0 && yChange !== 0) {
-      xChange *= 0.7071; // ~1/sqrt(2)
-      yChange *= 0.7071; // ~1/sqrt(2)
+      xChange *= 0.7071;
+      yChange *= 0.7071;
     }
 
     clientData.position.x += xChange;
