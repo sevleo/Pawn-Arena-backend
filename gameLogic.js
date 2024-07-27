@@ -42,22 +42,22 @@ function updateMovementIntervals(clientData) {
     if (clientData.moving.movingRight) {
       xChange = Math.min(
         clientData.speed,
-        CANVAS_WIDTH - clientData.position.x
+        CANVAS_WIDTH - clientData.circle.position.x
       );
     }
     if (clientData.moving.movingLeft) {
-      xChange = -Math.min(clientData.speed, clientData.position.x);
+      xChange = -Math.min(clientData.speed, clientData.circle.position.x);
     }
 
     // Handle vertical movement
     if (clientData.moving.movingUp) {
-      yChange = -Math.min(clientData.speed, clientData.position.y);
+      yChange = -Math.min(clientData.speed, clientData.circle.position.y);
     }
 
     if (clientData.moving.movingDown) {
       yChange = Math.min(
         clientData.speed,
-        CANVAS_HEIGHT - clientData.position.y
+        CANVAS_HEIGHT - clientData.circle.position.y
       );
     }
 
@@ -69,10 +69,16 @@ function updateMovementIntervals(clientData) {
     }
 
     // Update position
-    clientData.position.x = Math.round(clientData.position.x + xChange);
-    clientData.position.y = Math.round(clientData.position.y + yChange);
+    clientData.circle.position.x = Math.round(
+      clientData.circle.position.x + xChange
+    );
+    clientData.circle.position.y = Math.round(
+      clientData.circle.position.y + yChange
+    );
 
-    console.log(`${clientData.position.x}, ${clientData.position.y}`);
+    console.log(
+      `${clientData.circle.position.x}, ${clientData.circle.position.y}`
+    );
   }
 
   // Clear existing intervals if they exist

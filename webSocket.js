@@ -14,6 +14,7 @@ function setupWebSocket(server) {
     // Assign clientId and clientData to new connection
     const clientId = nextClientId++;
     const clientData = createClientData(ws);
+    console.log(clientData);
 
     // Add new connection to clients map
     clients.set(clientId, clientData); // Store the WebSocket connection with its ID
@@ -40,12 +41,20 @@ function setupWebSocket(server) {
           JSON.stringify({
             type: type,
             data: {
-              position: clientData.position,
+              position: {
+                x: clientData.circle.position.x,
+                y: clientData.circle.position.y,
+              },
               clientId: clientId,
-              allPositions: Array.from(clients.entries()).map(([id, data]) => ({
-                clientId: id,
-                position: data.position,
-              })),
+              allPositions: Array.from(clients.entries()).map(
+                ([id, client]) => ({
+                  clientId: id,
+                  position: {
+                    x: client.circle.position.x,
+                    y: client.circle.position.y,
+                  },
+                })
+              ),
             },
           })
         );
@@ -58,9 +67,12 @@ function setupWebSocket(server) {
         JSON.stringify({
           type: "position",
           data: {
-            allPositions: Array.from(clients.entries()).map(([id, data]) => ({
+            allPositions: Array.from(clients.entries()).map(([id, client]) => ({
               clientId: id,
-              position: data.position,
+              position: {
+                x: client.circle.position.x,
+                y: client.circle.position.y,
+              },
             })),
           },
         })
