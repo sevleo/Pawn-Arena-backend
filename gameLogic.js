@@ -36,18 +36,30 @@ function handleGameMessage(msg, clientData) {
 function updateMovementIntervals(clientData) {
   // Define movement functions
   function move() {
+    let xChange = 0;
+    let yChange = 0;
+
     if (clientData.moving.movingRight) {
-      clientData.position.x += clientData.speed;
+      xChange += clientData.speed;
     }
     if (clientData.moving.movingLeft) {
-      clientData.position.x -= clientData.speed;
+      xChange -= clientData.speed;
     }
     if (clientData.moving.movingUp) {
-      clientData.position.y -= clientData.speed;
+      yChange -= clientData.speed;
     }
     if (clientData.moving.movingDown) {
-      clientData.position.y += clientData.speed;
+      yChange += clientData.speed;
     }
+
+    // Normalize the speed for diagonal movement
+    if (xChange !== 0 && yChange !== 0) {
+      xChange *= 0.7071; // ~1/sqrt(2)
+      yChange *= 0.7071; // ~1/sqrt(2)
+    }
+
+    clientData.position.x += xChange;
+    clientData.position.y += yChange;
   }
 
   // Clear existing intervals if they exist
