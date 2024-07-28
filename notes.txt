@@ -1,7 +1,7 @@
 Tasks:
 
 1. Add borders matching canvas // Done
-2. Add dimensions of controllable units and pass these dimensions to the front-end
+2. Add dimensions of controllable units and pass these dimensions to the front-end // Done
 3. Add Face to controllable units
 4. Change face direction when moving direction changes
 5. 

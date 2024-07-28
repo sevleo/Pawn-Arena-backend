@@ -17,10 +17,10 @@ function handleGameMessage(msg, clientData) {
     // Throttling
     // Update movement state based on message
     clientData.moving = {
-      movingRight: msg.data.includes("ArrowRight"),
-      movingLeft: msg.data.includes("ArrowLeft"),
-      movingUp: msg.data.includes("ArrowUp"),
-      movingDown: msg.data.includes("ArrowDown"),
+      movingRight: msg.data.includes("arrowright") || msg.data.includes("d"),
+      movingLeft: msg.data.includes("arrowleft") || msg.data.includes("a"),
+      movingUp: msg.data.includes("arrowup") || msg.data.includes("w"),
+      movingDown: msg.data.includes("arrowdown") || msg.data.includes("s"),
     };
 
     clientData.lastUpdate = now;
@@ -68,9 +68,9 @@ function updateMovementIntervals(clientData) {
     // Update circle position
     clientData.circle.move(xChange, yChange, CANVAS_WIDTH, CANVAS_HEIGHT);
 
-    console.log(
-      `${clientData.circle.position.x}, ${clientData.circle.position.y}`
-    );
+    // console.log(
+    //   `${clientData.circle.position.x}, ${clientData.circle.position.y}`
+    // );
   }
 
   // Clear existing intervals if they exist
