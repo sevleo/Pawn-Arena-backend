@@ -1,44 +1,46 @@
 function createCircle(x, y, radius) {
-  const position = createPosition(x, y);
-  const boundsChecker = createBoundsChecker(radius);
-
+  const position = createPosition(x, y, radius);
   return {
     position,
     radius,
     move(xChange, yChange, canvasWidth, canvasHeight) {
-      position.update(xChange, yChange);
-      boundsChecker.check(position, canvasWidth, canvasHeight);
+      position.update(xChange, yChange, canvasWidth, canvasHeight);
     },
   };
 }
 
-function createPosition(x, y) {
+function createPosition(x, y, radius) {
+  function getBoundedPosition(newX, newY, canvasWidth, canvasHeight) {
+    if (newX - radius < 0) {
+      newX = radius;
+    }
+    if (newX + radius > canvasWidth) {
+      newX = canvasWidth - radius;
+    }
+    if (newY - radius < 0) {
+      newY = radius;
+    }
+    if (newY + radius > canvasHeight) {
+      newY = canvasHeight - radius;
+    }
+    return { x: newX, y: newY };
+  }
+
   return {
     x,
     y,
-    update(xChange, yChange) {
-      this.x += xChange;
-      this.y += yChange;
-    },
-  };
-}
-
-function createBoundsChecker(radius) {
-  return {
     radius,
-    check(position, canvasWidth, canvasHeight) {
-      if (position.x - this.radius < 0) {
-        position.x = this.radius;
-      }
-      if (position.x + this.radius > canvasWidth) {
-        position.x = canvasWidth - this.radius;
-      }
-      if (position.y - this.radius < 0) {
-        position.y = this.radius;
-      }
-      if (position.y + this.radius > canvasHeight) {
-        position.y = canvasHeight - this.radius;
-      }
+    update(xChange, yChange, canvasWidth, canvasHeight) {
+      const newX = this.x + xChange;
+      const newY = this.y + yChange;
+      const boundedPosition = getBoundedPosition(
+        newX,
+        newY,
+        canvasWidth,
+        canvasHeight
+      );
+      this.x = boundedPosition.x;
+      this.y = boundedPosition.y;
     },
   };
 }

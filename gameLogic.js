@@ -38,27 +38,24 @@ function updateMovementIntervals(clientData) {
     let xChange = 0;
     let yChange = 0;
 
-    // Handle horizontal movement
+    // Handle moving right
     if (clientData.moving.movingRight) {
-      xChange = Math.min(
-        clientData.speed,
-        CANVAS_WIDTH - clientData.circle.position.x
-      );
+      xChange = clientData.speed;
     }
+
+    // Handle moving left
     if (clientData.moving.movingLeft) {
-      xChange = -Math.min(clientData.speed, clientData.circle.position.x);
+      xChange = -clientData.speed;
     }
 
-    // Handle vertical movement
+    // Handle moving up
     if (clientData.moving.movingUp) {
-      yChange = -Math.min(clientData.speed, clientData.circle.position.y);
+      yChange = -clientData.speed;
     }
 
+    // Handle moving down
     if (clientData.moving.movingDown) {
-      yChange = Math.min(
-        clientData.speed,
-        CANVAS_HEIGHT - clientData.circle.position.y
-      );
+      yChange = clientData.speed;
     }
 
     // Normalize the speed for diagonal movement
@@ -68,13 +65,8 @@ function updateMovementIntervals(clientData) {
       yChange *= diagonalFactor;
     }
 
-    // Update position
-    clientData.circle.position.x = Math.round(
-      clientData.circle.position.x + xChange
-    );
-    clientData.circle.position.y = Math.round(
-      clientData.circle.position.y + yChange
-    );
+    // Update circle position
+    clientData.circle.move(xChange, yChange, CANVAS_WIDTH, CANVAS_HEIGHT);
 
     console.log(
       `${clientData.circle.position.x}, ${clientData.circle.position.y}`

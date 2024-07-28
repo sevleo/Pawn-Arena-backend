@@ -46,6 +46,7 @@ function setupWebSocket(server) {
                 y: clientData.circle.position.y,
               },
               clientId: clientId,
+              radius: clientData.circle.radius,
               allPositions: Array.from(clients.entries()).map(
                 ([id, client]) => ({
                   clientId: id,
@@ -69,6 +70,7 @@ function setupWebSocket(server) {
           data: {
             allPositions: Array.from(clients.entries()).map(([id, client]) => ({
               clientId: id,
+              radius: clientData.circle.radius,
               position: {
                 x: client.circle.position.x,
                 y: client.circle.position.y,

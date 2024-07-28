@@ -4,7 +4,7 @@ const { createCircle } = require("./circle");
 function createClientData(ws) {
   return {
     ws,
-    circle: createCircle(100, 100, 20),
+    circle: createCircle(100, 100, 10),
     lastUpdate: Date.now(),
     speed: MOVEMENT_SPEED,
     moving: {
