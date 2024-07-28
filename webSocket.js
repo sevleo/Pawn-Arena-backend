@@ -1,5 +1,9 @@
 const WebSocket = require("ws");
-const { BROADCAST_RATE_INTERVAL } = require("./gameConstants");
+const {
+  BROADCAST_RATE_INTERVAL,
+  CANVAS_WIDTH,
+  CANVAS_HEIGHT,
+} = require("./gameConstants");
 const createClientData = require("./models/clientData");
 
 const handleGameMessage = require("./gameLogic");
@@ -14,6 +18,7 @@ function setupWebSocket(server) {
     // Assign clientId and clientData to new connection
     const clientId = nextClientId++;
     const clientData = createClientData(ws);
+
     console.log(clientData);
 
     // Add new connection to clients map
@@ -21,7 +26,7 @@ function setupWebSocket(server) {
     console.log("a user connected");
     console.log(clients);
 
-    sendPosition(ws, "initial position"); // First communication to client to let them know their clientId
+    sendInitialData(ws, "initial position"); // First communication to client to let them know their clientId
 
     ws.on("message", (message) => {
       const msg = JSON.parse(message);
@@ -35,13 +40,17 @@ function setupWebSocket(server) {
     });
 
     // Broadcast the updated position to a specific client
-    function sendPosition(client, type) {
+    function sendInitialData(client, type) {
       if (client.readyState === WebSocket.OPEN) {
         client.send(
           JSON.stringify({
             type: type,
             data: {
               clientId: clientId,
+              defaultMousePosition: {
+                x: CANVAS_WIDTH / 2,
+                y: CANVAS_HEIGHT / 2,
+              },
             },
           })
         );
