@@ -22,10 +22,10 @@ function setupWebSocket(server) {
     console.log(clients);
 
     sendPosition(ws, "initial position"); // First communication to client to let them know their clientId
-    setInterval(broadcastPositions, BROADCAST_RATE_INTERVAL); // Regular interval to broadcast positions
 
     ws.on("message", (message) => {
-      handleGameMessage(JSON.parse(message), clientData);
+      const msg = JSON.parse(message);
+      handleGameMessage(msg, clientData);
     });
 
     ws.on("close", () => {
@@ -41,46 +41,39 @@ function setupWebSocket(server) {
           JSON.stringify({
             type: type,
             data: {
-              position: {
-                x: clientData.circle.position.x,
-                y: clientData.circle.position.y,
-              },
               clientId: clientId,
-              radius: clientData.circle.radius,
-              allPositions: Array.from(clients.entries()).map(
-                ([id, client]) => ({
-                  clientId: id,
-                  position: {
-                    x: client.circle.position.x,
-                    y: client.circle.position.y,
-                  },
-                })
-              ),
             },
           })
         );
       }
     }
-
-    // Broadcast the updated position to all clients
-    function broadcastPositions() {
-      ws.send(
-        JSON.stringify({
-          type: "position",
-          data: {
-            allPositions: Array.from(clients.entries()).map(([id, client]) => ({
-              clientId: id,
-              radius: clientData.circle.radius,
-              position: {
-                x: client.circle.position.x,
-                y: client.circle.position.y,
-              },
-            })),
-          },
-        })
-      );
-    }
   });
+
+  // Broadcast the updated position to all clients
+  function broadcastPositions() {
+    const allPositions = Array.from(clients.entries()).map(([id, client]) => ({
+      clientId: id,
+      radius: client.circle.radius,
+      position: {
+        x: client.circle.position.x,
+        y: client.circle.position.y,
+      },
+      direction: client.direction,
+    }));
+
+    const message = JSON.stringify({
+      type: "position",
+      data: { allPositions },
+    });
+
+    wss.clients.forEach((client) => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(message);
+      }
+    });
+  }
+
+  setInterval(broadcastPositions, BROADCAST_RATE_INTERVAL); // Regular interval to broadcast positions
 
   return wss;
 }

@@ -30,6 +30,10 @@ function handleGameMessage(msg, clientData) {
   if (msg.type === "boost") {
     clientData.speed = msg.data ? MOVEMENT_SPEED_BOOST : MOVEMENT_SPEED;
   }
+
+  if (msg.type === "updateDirection") {
+    clientData.direction = msg.direction;
+  }
 }
 
 function updateMovementIntervals(clientData) {

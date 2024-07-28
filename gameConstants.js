@@ -7,9 +7,9 @@ const BROADCAST_RATE_INTERVAL = 10;
 const THROTTLING_INTERVAL = 0;
 
 // Controllable unit
-const MOVEMENT_SPEED = 1;
+const MOVEMENT_SPEED = 2;
 const MOVEMENT_FREQUENCY_RATE = 10;
-const MOVEMENT_SPEED_BOOST = 8;
+const MOVEMENT_SPEED_BOOST = 4;
 const INITIAL_POSITION = { x: 200, y: 200 };
 
 module.exports = {
