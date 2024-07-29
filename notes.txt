@@ -5,7 +5,9 @@ Tasks:
 3. Add Face to controllable units // Done
 4. Change face direction when moving direction changes // Done
 5. Add default mouse position // Done
-6. Add firing bullets
+6. Add firing bullets // Done
 7. Add bullet collision with CU
+
 8. Add different positions for every new player
 9. Add max 10 players
+10. Update line   clients.forEach(updateMovement);
