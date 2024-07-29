@@ -1,7 +1,7 @@
 const cors = require("cors");
 const express = require("express");
 const http = require("http");
-const setupWebSocket = require("./webSocket");
+const setupWebSocket = require("../src/utils/webSocket");
 // const setupSocketIo = require("./socketIo");
 
 const app = express();

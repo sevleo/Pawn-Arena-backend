@@ -1,4 +1,4 @@
-const { MOVEMENT_SPEED } = require("../gameConstants");
+const { MOVEMENT_SPEED } = require("../config/gameConstants");
 const { createCircle } = require("./circle");
 
 function createClientData(ws) {
