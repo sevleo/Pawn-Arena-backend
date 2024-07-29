@@ -5,86 +5,99 @@ const {
   MOVEMENT_FREQUENCY_RATE,
   CANVAS_WIDTH,
   CANVAS_HEIGHT,
+  BULLET_SPEED,
+  BULLET_MAX_DISTANCE,
 } = require("./gameConstants");
+const { clients, bullets } = require("./gameState");
 
-function handleGameMessage(msg, clientData) {
+function handleMove(msg, clientData) {
   const now = Date.now();
-
-  if (
-    msg.type === "move" &&
-    now - clientData.lastUpdate >= THROTTLING_INTERVAL
-  ) {
-    // Throttling
-    // Update movement state based on message
+  if (now - clientData.lastUpdate >= THROTTLING_INTERVAL) {
     clientData.moving = {
       movingRight: msg.data.includes("arrowright") || msg.data.includes("d"),
       movingLeft: msg.data.includes("arrowleft") || msg.data.includes("a"),
       movingUp: msg.data.includes("arrowup") || msg.data.includes("w"),
       movingDown: msg.data.includes("arrowdown") || msg.data.includes("s"),
     };
-
     clientData.lastUpdate = now;
-    updateMovementIntervals(clientData);
-  }
-
-  if (msg.type === "boost") {
-    clientData.speed = msg.data ? MOVEMENT_SPEED_BOOST : MOVEMENT_SPEED;
-  }
-
-  if (msg.type === "updateDirection") {
-    clientData.direction = msg.direction;
   }
 }
 
-function updateMovementIntervals(clientData) {
+function handleBoost(msg, clientData) {
+  clientData.speed = msg.data ? MOVEMENT_SPEED_BOOST : MOVEMENT_SPEED;
+}
+
+function handleFaceDirectionUpdate(msg, clientData) {
+  clientData.direction = msg.direction;
+}
+
+function handleBulletFire(clientData) {
+  const bullet = {
+    x: clientData.circle.position.x,
+    y: clientData.circle.position.y,
+    directionX: clientData.direction.directionX,
+    directionY: clientData.direction.directionY,
+    distanceTravelled: 0,
+  };
+  bullets.push(bullet);
+}
+
+function updateMovement(clientData) {
   // Define movement functions
-  function move() {
-    let xChange = 0;
-    let yChange = 0;
 
-    // Handle moving right
-    if (clientData.moving.movingRight) {
-      xChange = clientData.speed;
-    }
+  let xChange = 0;
+  let yChange = 0;
 
-    // Handle moving left
-    if (clientData.moving.movingLeft) {
-      xChange = -clientData.speed;
-    }
+  if (clientData.moving.movingRight) xChange = clientData.speed;
+  if (clientData.moving.movingLeft) xChange = -clientData.speed;
+  if (clientData.moving.movingUp) yChange = -clientData.speed;
+  if (clientData.moving.movingDown) yChange = clientData.speed;
 
-    // Handle moving up
-    if (clientData.moving.movingUp) {
-      yChange = -clientData.speed;
-    }
-
-    // Handle moving down
-    if (clientData.moving.movingDown) {
-      yChange = clientData.speed;
-    }
-
-    // Normalize the speed for diagonal movement
-    if (xChange !== 0 && yChange !== 0) {
-      const diagonalFactor = 0.7071; // or Math.sqrt(2) / 2
-      xChange *= diagonalFactor;
-      yChange *= diagonalFactor;
-    }
-
-    // Update circle position
-    clientData.circle.move(xChange, yChange, CANVAS_WIDTH, CANVAS_HEIGHT);
-
-    // console.log(
-    //   `${clientData.circle.position.x}, ${clientData.circle.position.y}`
-    // );
+  if (xChange !== 0 && yChange !== 0) {
+    const diagonalFactor = 0.7071;
+    xChange *= diagonalFactor;
+    yChange *= diagonalFactor;
   }
 
-  // Clear existing intervals if they exist
-  if (clientData.movementIntervalId)
-    clearInterval(clientData.movementIntervalId);
-
-  // Check if there are active directions and set interval
-  if (Object.values(clientData.moving).some(Boolean)) {
-    clientData.movementIntervalId = setInterval(move, MOVEMENT_FREQUENCY_RATE);
-  }
+  clientData.circle.move(xChange, yChange, CANVAS_WIDTH, CANVAS_HEIGHT);
 }
 
-module.exports = handleGameMessage;
+// Function to update bullet positions
+function updateBullets() {
+  bullets.forEach((bullet, index) => {
+    const magnitude = Math.sqrt(
+      bullet.directionX ** 2 + bullet.directionY ** 2
+    );
+    bullet.x += (bullet.directionX / magnitude) * BULLET_SPEED;
+    bullet.y += (bullet.directionY / magnitude) * BULLET_SPEED;
+    bullet.distanceTravelled += BULLET_SPEED;
+
+    // Remove bullets that are out of bounds or have travelled max distance
+    if (
+      bullet.distanceTravelled >= BULLET_MAX_DISTANCE ||
+      bullet.x < 0 ||
+      bullet.x > CANVAS_WIDTH ||
+      bullet.y < 0 ||
+      bullet.y > CANVAS_HEIGHT
+    ) {
+      bullets.splice(index, 1);
+    }
+  });
+}
+
+function updateGameState() {
+  updateBullets();
+  clients.forEach(updateMovement);
+}
+
+function setUpdateInterval() {
+  setInterval(updateGameState, MOVEMENT_FREQUENCY_RATE);
+}
+
+module.exports = {
+  handleMove,
+  handleBoost,
+  handleFaceDirectionUpdate,
+  handleBulletFire,
+  setUpdateInterval,
+};

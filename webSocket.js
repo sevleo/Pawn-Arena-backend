@@ -3,53 +3,52 @@ const {
   BROADCAST_RATE_INTERVAL,
   CANVAS_WIDTH,
   CANVAS_HEIGHT,
-  MOVEMENT_FREQUENCY_RATE,
-  BULLET_SPEED,
-  BULLET_MAX_DISTANCE,
 } = require("./gameConstants");
 const createClientData = require("./models/clientData");
-const handleGameMessage = require("./gameLogic");
+const {
+  handleMove,
+  handleBoost,
+  handleFaceDirectionUpdate,
+  handleBulletFire,
+  setUpdateInterval,
+} = require("./gameLogic");
+const { clients, bullets } = require("./gameState");
+let { nextClientId } = require("./gameState");
 
 function setupWebSocket(server) {
   const wss = new WebSocket.Server({ server });
-
-  let nextClientId = 0; // Initialize a counter for client IDs
-  const clients = new Map();
-  const bullets = [];
 
   wss.on("connection", (ws) => {
     // Assign clientId and clientData to new connection
     const clientId = nextClientId++;
     const clientData = createClientData(ws);
 
-    console.log(clientData);
-
     // Add new connection to clients map
-    clients.set(clientId, clientData); // Store the WebSocket connection with its ID
-    console.log("a user connected");
-    console.log(clients);
+    clients.set(clientId, clientData);
 
-    sendInitialData(ws, "initial position"); // First communication to client to let them know their clientId
+    // First communication to client to let them know their clientId
+    sendInitialData(ws, "initial position");
 
     ws.on("message", (message) => {
       const msg = JSON.parse(message);
-      handleGameMessage(msg, clientData);
-      if (msg.type === "fireBullet") {
-        const bullet = {
-          x: clientData.circle.position.x,
-          y: clientData.circle.position.y,
-          directionX: clientData.direction.directionX,
-          directionY: clientData.direction.directionY,
-          distanceTravelled: 0,
-        };
-        bullets.push(bullet);
+      switch (msg.type) {
+        case "move":
+          handleMove(msg, clientData);
+          break;
+        case "boost":
+          handleBoost(msg, clientData);
+          break;
+        case "updateFaceDirection":
+          handleFaceDirectionUpdate(msg, clientData);
+          break;
+        case "fireBullet":
+          handleBulletFire(clientData);
+          break;
       }
     });
 
     ws.on("close", () => {
-      console.log("user disconnected");
       clients.delete(clientId);
-      console.log(clients);
     });
 
     // Broadcast the updated position to a specific client
@@ -72,7 +71,7 @@ function setupWebSocket(server) {
   });
 
   // Broadcast the updated position to all clients
-  function broadcastPositions() {
+  function broadcastGameState() {
     const allPositions = Array.from(clients.entries()).map(([id, client]) => ({
       clientId: id,
       radius: client.circle.radius,
@@ -84,7 +83,7 @@ function setupWebSocket(server) {
     }));
 
     const message = JSON.stringify({
-      type: "position",
+      type: "gameState",
       data: { allPositions, bullets },
     });
 
@@ -95,36 +94,8 @@ function setupWebSocket(server) {
     });
   }
 
-  setInterval(broadcastPositions, BROADCAST_RATE_INTERVAL); // Regular interval to broadcast positions
-
-  // Function to update bullet positions
-  function updateBullets() {
-    bullets.forEach((bullet, index) => {
-      const magnitude = Math.sqrt(
-        bullet.directionX * bullet.directionX +
-          bullet.directionY * bullet.directionY
-      );
-
-      bullet.x += (bullet.directionX / magnitude) * BULLET_SPEED;
-      bullet.y += (bullet.directionY / magnitude) * BULLET_SPEED;
-      bullet.distanceTravelled += BULLET_SPEED;
-
-      // Remove bullets that are out of bounds or have travelled max distance
-      if (
-        bullet.distanceTravelled >= BULLET_MAX_DISTANCE ||
-        bullet.x < 0 ||
-        bullet.x > CANVAS_WIDTH ||
-        bullet.y < 0 ||
-        bullet.y > CANVAS_HEIGHT
-      ) {
-        bullets.splice(index, 1);
-      }
-    });
-  }
-
-  setInterval(() => {
-    updateBullets();
-  }, MOVEMENT_FREQUENCY_RATE);
+  setInterval(broadcastGameState, BROADCAST_RATE_INTERVAL); // Regular interval to broadcast positions
+  setUpdateInterval();
 
   return wss;
 }
