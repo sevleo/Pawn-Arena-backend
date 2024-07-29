@@ -5,6 +5,10 @@ function createClientData(ws) {
   return {
     ws,
     circle: createCircle(100, 100, 10),
+    direction: {
+      directionX: 0,
+      directionY: 0,
+    },
     lastUpdate: Date.now(),
     speed: MOVEMENT_SPEED,
     moving: {

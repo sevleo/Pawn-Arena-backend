@@ -4,4 +4,8 @@ Tasks:
 2. Add dimensions of controllable units and pass these dimensions to the front-end // Done
 3. Add Face to controllable units // Done
 4. Change face direction when moving direction changes // Done
-5. 
+5. Add default mouse position // Done
+6. Add firing bullets
+7. Add bullet collision with CU
+8. Add different positions for every new player
+9. Add max 10 players
