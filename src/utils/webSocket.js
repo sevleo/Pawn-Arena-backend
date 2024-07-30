@@ -13,7 +13,7 @@ function setupWebSocket(server) {
   wss.on("connection", (ws) => {
     // Assign clientId and clientData to new connection
     const clientId = nextClientId++;
-    const clientData = createClientData(ws);
+    const clientData = createClientData(ws, clientId);
 
     // Add new connection to clients map
     clients.set(clientId, clientData);

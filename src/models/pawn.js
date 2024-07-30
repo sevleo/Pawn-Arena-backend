@@ -1,27 +1,29 @@
+const { CANVAS_WIDTH, CANVAS_HEIGHT } = require("../config/gameConstants");
+
 function createPawn(x, y, radius) {
   const position = createPosition(x, y, radius);
   return {
     position,
     radius,
-    move(clientData, canvasWidth, canvasHeight) {
-      position.update(clientData, canvasWidth, canvasHeight);
+    move(clientData) {
+      position.update(clientData);
     },
   };
 }
 
 function createPosition(x, y, radius) {
-  function getBoundedPosition(newX, newY, canvasWidth, canvasHeight) {
+  function getBoundedPosition(newX, newY) {
     if (newX - radius < 0) {
       newX = radius;
     }
-    if (newX + radius > canvasWidth) {
-      newX = canvasWidth - radius;
+    if (newX + radius > CANVAS_WIDTH) {
+      newX = CANVAS_WIDTH - radius;
     }
     if (newY - radius < 0) {
       newY = radius;
     }
-    if (newY + radius > canvasHeight) {
-      newY = canvasHeight - radius;
+    if (newY + radius > CANVAS_HEIGHT) {
+      newY = CANVAS_HEIGHT - radius;
     }
     return { x: newX, y: newY };
   }
@@ -30,7 +32,7 @@ function createPosition(x, y, radius) {
     x,
     y,
     radius,
-    update(clientData, canvasWidth, canvasHeight) {
+    update(clientData) {
       let xChange = 0;
       let yChange = 0;
 
@@ -48,12 +50,7 @@ function createPosition(x, y, radius) {
       const newX = this.x + xChange;
       const newY = this.y + yChange;
 
-      const boundedPosition = getBoundedPosition(
-        newX,
-        newY,
-        canvasWidth,
-        canvasHeight
-      );
+      const boundedPosition = getBoundedPosition(newX, newY);
 
       this.x = boundedPosition.x;
       this.y = boundedPosition.y;
