@@ -8,9 +8,14 @@ const {
 function createBullet(clientData) {
   const position = createPosition(clientData);
   const clientId = clientData.clientId;
+  const bulletRadius = clientData.pawn.bulletConfig.bulletRadius;
+  const bulletWidth = clientData.pawn.bulletConfig.bulletWidth;
+  const bulletHeight = clientData.pawn.bulletConfig.bulletHeight;
+
   return {
     position,
     clientId,
+    bulletRadius,
     move(bullets, index) {
       position.update(bullets, index);
     },

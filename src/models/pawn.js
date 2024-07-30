@@ -5,6 +5,11 @@ function createPawn(x, y, radius) {
   return {
     position,
     radius,
+    bulletConfig: {
+      bulletRadius: 3,
+      bulletWidth: 1,
+      bulletHeight: 4,
+    },
     move(clientData) {
       position.update(clientData);
     },

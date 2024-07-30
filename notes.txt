@@ -12,3 +12,4 @@ Tasks:
 8. Add different positions for every new player
 9. Add max 10 players
 10. Update line   clients.forEach(updateMovement);
+11. Merge "Clients, ClientData, and allPawns" into one entity
