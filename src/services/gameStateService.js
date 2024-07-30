@@ -21,6 +21,31 @@ function updateBullets() {
 function updateGameState() {
   updatePawns();
   updateBullets();
+  detectCollisions();
+}
+
+function detectCollisions() {
+  bullets.forEach((bullet, bulletIndex) => {
+    clients.forEach((clientData, clientId) => {
+      if (bullet.clientId !== clientId) {
+        const pawn = clientData.pawn;
+        const distance = Math.sqrt(
+          (bullet.position.x - pawn.position.x) ** 2 +
+            (bullet.position.y - pawn.position.y) ** 2
+        );
+
+        if (distance < bullet.bulletRadius + pawn.radius) {
+          // Collision detected
+          // Handle the collision (e.g., remove bullet, reduce pawn health, etc.)
+          bullets.splice(bulletIndex, 1); // Remove the bullet
+          console.log(
+            `Collision detected! Bullet of pawn ${bullet.clientId} hit pawn ${clientId}.`
+          );
+          // Additional logic for handling the pawn can be added here
+        }
+      }
+    });
+  });
 }
 
 function setUpdateGameStateInterval() {
