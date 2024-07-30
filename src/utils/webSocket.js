@@ -7,7 +7,7 @@ const { clients } = require("../services/gameStateService");
 const { setBroadcastGameStateInterval } = require("./broadcastUtils");
 let { nextClientId } = require("../services/gameStateService");
 
-function setupWebSocket(server, world) {
+function setupWebSocket(server, world, engine) {
   const wss = new WebSocket.Server({ server });
 
   wss.on("connection", (ws) => {
@@ -50,7 +50,7 @@ function setupWebSocket(server, world) {
     }
   }
 
-  setUpdateGameStateInterval();
+  setUpdateGameStateInterval(engine);
   setBroadcastGameStateInterval(wss);
 
   return wss;

@@ -1,4 +1,5 @@
 const { GAME_SPEED_RATE } = require("../config/gameConstants");
+const { Engine } = require("matter-js");
 
 const clients = new Map();
 const bullets = [];
@@ -12,16 +13,17 @@ function updatePawns() {
 }
 
 // Updates position of bullets
-function updateBullets() {
+function updateBullets(engine) {
   bullets.forEach((bullet, index) => {
     bullet.move(bullets, index);
   });
 }
 
-function updateGameState() {
+function updateGameState(engine) {
   updatePawns();
   updateBullets();
   detectCollisions();
+  Engine.update(engine, 1000 / 60);
 }
 
 function detectCollisions() {
@@ -48,8 +50,8 @@ function detectCollisions() {
   });
 }
 
-function setUpdateGameStateInterval() {
-  setInterval(updateGameState, GAME_SPEED_RATE);
+function setUpdateGameStateInterval(engine) {
+  setInterval(() => updateGameState(engine), GAME_SPEED_RATE);
 }
 
 module.exports = {

@@ -19,13 +19,14 @@ app.options("*", cors(corsOptions));
 // Initialize Matter.js engine and world
 const engine = Engine.create();
 const world = engine.world;
+
+engine.gravity.x = 0;
+engine.gravity.y = 0;
+
 console.log(engine);
 console.log(world);
 
-// Export for use in other modules
-module.exports = { engine, world };
-
-setupWebSocket(server, world);
+setupWebSocket(server, world, engine);
 // setupSocketIo(server, corsOptions);
 
 server.listen(3000, () => {
