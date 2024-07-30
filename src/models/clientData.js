@@ -1,11 +1,11 @@
 const { MOVEMENT_SPEED } = require("../config/gameConstants");
 const { createPawn } = require("./pawn");
 
-function createClientData(ws, clientId) {
+function createClientData(ws, clientId, world) {
   return {
     ws,
     clientId,
-    pawn: createPawn(100, 100, 10),
+    pawn: createPawn(100, 100, 10, world),
     direction: {
       directionX: 0,
       directionY: 0,

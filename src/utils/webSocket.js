@@ -7,13 +7,15 @@ const { clients } = require("../services/gameStateService");
 const { setBroadcastGameStateInterval } = require("./broadcastUtils");
 let { nextClientId } = require("../services/gameStateService");
 
-function setupWebSocket(server) {
+function setupWebSocket(server, world) {
   const wss = new WebSocket.Server({ server });
 
   wss.on("connection", (ws) => {
     // Assign clientId and clientData to new connection
     const clientId = nextClientId++;
-    const clientData = createClientData(ws, clientId);
+    const clientData = createClientData(ws, clientId, world);
+    console.log("test");
+    console.log(clientData.pawn.body.position);
 
     // Add new connection to clients map
     clients.set(clientId, clientData);

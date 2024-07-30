@@ -2,7 +2,7 @@ const cors = require("cors");
 const express = require("express");
 const http = require("http");
 const setupWebSocket = require("../src/utils/webSocket");
-// const setupSocketIo = require("./socketIo");
+const { Engine } = require("matter-js");
 
 const app = express();
 const server = http.createServer(app);
@@ -16,7 +16,16 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.options("*", cors(corsOptions));
 
-setupWebSocket(server);
+// Initialize Matter.js engine and world
+const engine = Engine.create();
+const world = engine.world;
+console.log(engine);
+console.log(world);
+
+// Export for use in other modules
+module.exports = { engine, world };
+
+setupWebSocket(server, world);
 // setupSocketIo(server, corsOptions);
 
 server.listen(3000, () => {

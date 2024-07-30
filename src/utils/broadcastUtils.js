@@ -9,8 +9,8 @@ function broadcastGameState(wss) {
     clientId: id,
     radius: client.pawn.radius,
     position: {
-      x: client.pawn.position.x,
-      y: client.pawn.position.y,
+      x: client.pawn.body.position.x,
+      y: client.pawn.body.position.y,
     },
     direction: client.direction,
   }));
