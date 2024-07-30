@@ -1,10 +1,10 @@
 const { MOVEMENT_SPEED } = require("../config/gameConstants");
-const { createCircle } = require("./circle");
+const { createPawn } = require("./pawn");
 
 function createClientData(ws) {
   return {
     ws,
-    circle: createCircle(100, 100, 10),
+    pawn: createPawn(100, 100, 10),
     direction: {
       directionX: 0,
       directionY: 0,

@@ -7,7 +7,8 @@ Tasks:
 5. Add default mouse position // Done
 6. Add firing bullets // Done
 7. Add bullet collision with CU
-
+    7.1 Add bullet information: clientId
+    7.2 Move bullet to a separate model
 8. Add different positions for every new player
 9. Add max 10 players
 10. Update line   clients.forEach(updateMovement);

@@ -5,19 +5,19 @@ const { clients, bullets } = require("../services/gameStateService");
 
 // Broadcast the updated position to all clients
 function broadcastGameState(wss) {
-  const allPositions = Array.from(clients.entries()).map(([id, client]) => ({
+  const allPawns = Array.from(clients.entries()).map(([id, client]) => ({
     clientId: id,
-    radius: client.circle.radius,
+    radius: client.pawn.radius,
     position: {
-      x: client.circle.position.x,
-      y: client.circle.position.y,
+      x: client.pawn.position.x,
+      y: client.pawn.position.y,
     },
     direction: client.direction,
   }));
 
   const message = JSON.stringify({
     type: "gameState",
-    data: { allPositions, bullets },
+    data: { allPawns, bullets },
   });
 
   wss.clients.forEach((client) => {

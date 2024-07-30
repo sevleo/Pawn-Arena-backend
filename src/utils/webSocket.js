@@ -1,9 +1,5 @@
 const WebSocket = require("ws");
-const {
-  BROADCAST_RATE_INTERVAL,
-  CANVAS_WIDTH,
-  CANVAS_HEIGHT,
-} = require("../config/gameConstants");
+const { CANVAS_WIDTH, CANVAS_HEIGHT } = require("../config/gameConstants");
 const createClientData = require("../models/clientData");
 const { setUpdateGameStateInterval } = require("../services/gameStateService");
 const { handleMessage } = require("../controllers/clientMessageController");

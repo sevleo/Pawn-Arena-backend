@@ -4,6 +4,7 @@ const {
   THROTTLING_INTERVAL,
 } = require("../config/gameConstants");
 const { bullets } = require("./gameStateService");
+const createBullet = require("../models/bullet");
 
 function handleMove(msg, clientData) {
   const now = Date.now();
@@ -27,13 +28,7 @@ function handleFaceDirectionUpdate(msg, clientData) {
 }
 
 function handleBulletFire(clientData) {
-  const bullet = {
-    x: clientData.circle.position.x,
-    y: clientData.circle.position.y,
-    directionX: clientData.direction.directionX,
-    directionY: clientData.direction.directionY,
-    distanceTravelled: 0,
-  };
+  const bullet = createBullet(clientData);
   bullets.push(bullet);
 }
 
