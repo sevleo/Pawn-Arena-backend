@@ -1,0 +1,16 @@
+- Add borders matching canvas // Done
+- Add dimensions of controllable units and pass these dimensions to the front-end // Done
+- Add Face to controllable units // Done
+- Change face direction when moving direction changes // Done
+- Add default mouse position // Done
+- Add firing bullets // Done
+- Add bullet information: clientId // Done
+- Move bullet to a separate model // Done
+- Update line   clients.forEach(updateMovement); // Done
+
+- Add bullet collision with CU
+- Add different positions for every new player
+- Add max 10 players
+- Merge "Clients, ClientData, and allPawns" into one entity
+- Employ Docker.
+- Employ Redis.
