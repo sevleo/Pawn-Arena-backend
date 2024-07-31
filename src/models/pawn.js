@@ -1,13 +1,12 @@
-const { Bodies, Composite, Body } = require("matter-js");
+const { Bodies, Composite, Body, Vector } = require("matter-js");
 const { CANVAS_WIDTH, CANVAS_HEIGHT } = require("../config/gameConstants");
 
 function createPawn(x, y, radius, world) {
-  console.log(world);
   const pawnBody = Bodies.circle(x, y, radius, {
     isStatic: false,
-    restitution: 0.5,
-    friction: 0.1,
-    frictionAir: 0.01,
+    restitution: 0.2,
+    friction: 0.5,
+    frictionAir: 0.1,
   });
 
   Composite.add(world, pawnBody);
@@ -21,32 +20,27 @@ function createPawn(x, y, radius, world) {
       bulletHeight: 4,
     },
     move(clientData) {
-      let xChange = 0;
-      let yChange = 0;
+      let xForce = 0;
+      let yForce = 0;
 
-      if (clientData.moving.movingRight) xChange = clientData.speed;
-      if (clientData.moving.movingLeft) xChange = -clientData.speed;
-      if (clientData.moving.movingUp) yChange = -clientData.speed;
-      if (clientData.moving.movingDown) yChange = clientData.speed;
+      if (clientData.moving.movingRight) xForce = clientData.speed;
+      if (clientData.moving.movingLeft) xForce = -clientData.speed;
+      if (clientData.moving.movingUp) yForce = -clientData.speed;
+      if (clientData.moving.movingDown) yForce = clientData.speed;
 
-      if (xChange !== 0 && yChange !== 0) {
+      if (xForce !== 0 || yForce !== 0) {
         const diagonalFactor = 0.7071;
-        xChange *= diagonalFactor;
-        yChange *= diagonalFactor;
+        if (xForce !== 0 && yForce !== 0) {
+          xForce *= diagonalFactor;
+          yForce *= diagonalFactor;
+        }
+
+        // Apply force to the body
+        Body.applyForce(this.body, this.body.position, {
+          x: xForce,
+          y: yForce,
+        });
       }
-
-      // const newX = this.x + xChange;
-      // const newY = this.y + yChange;
-
-      // const boundedPosition = getBoundedPosition(newX, newY);
-
-      // this.x = boundedPosition.x;
-      // this.y = boundedPosition.y;
-
-      Body.setVelocity(this.body, {
-        x: xChange,
-        y: yChange,
-      });
     },
   };
 }

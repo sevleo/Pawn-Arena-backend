@@ -14,8 +14,6 @@ function setupWebSocket(server, world, engine) {
     // Assign clientId and clientData to new connection
     const clientId = nextClientId++;
     const clientData = createClientData(ws, clientId, world);
-    console.log("test");
-    console.log(clientData.pawn.body.position);
 
     // Add new connection to clients map
     clients.set(clientId, clientData);

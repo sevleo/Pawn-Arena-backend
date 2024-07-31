@@ -5,6 +5,8 @@ const clients = new Map();
 const bullets = [];
 let nextClientId = 0;
 
+let lastTime;
+
 // Updates position of pawns
 function updatePawns() {
   clients.forEach((clientData) => {
@@ -13,17 +15,21 @@ function updatePawns() {
 }
 
 // Updates position of bullets
-function updateBullets(engine) {
+function updateBullets() {
   bullets.forEach((bullet, index) => {
     bullet.move(bullets, index);
   });
 }
 
 function updateGameState(engine) {
+  const now = Date.now();
+  const delta = now - lastTime;
+  lastTime = now;
+
   updatePawns();
   updateBullets();
   detectCollisions();
-  Engine.update(engine, 1000 / 60);
+  Engine.update(engine, delta);
 }
 
 function detectCollisions() {
@@ -32,8 +38,8 @@ function detectCollisions() {
       if (bullet.clientId !== clientId) {
         const pawn = clientData.pawn;
         const distance = Math.sqrt(
-          (bullet.position.x - pawn.position.x) ** 2 +
-            (bullet.position.y - pawn.position.y) ** 2
+          (bullet.position.x - pawn.body.position.x) ** 2 +
+            (bullet.position.y - pawn.body.position.y) ** 2
         );
 
         if (distance < bullet.bulletRadius + pawn.radius) {
@@ -51,6 +57,7 @@ function detectCollisions() {
 }
 
 function setUpdateGameStateInterval(engine) {
+  lastTime = Date.now();
   setInterval(() => updateGameState(engine), GAME_SPEED_RATE);
 }
 

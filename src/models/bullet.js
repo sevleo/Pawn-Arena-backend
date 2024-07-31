@@ -23,8 +23,8 @@ function createBullet(clientData) {
 }
 
 function createPosition(clientData) {
-  let x = clientData.pawn.position.x;
-  let y = clientData.pawn.position.y;
+  let x = clientData.pawn.body.position.x;
+  let y = clientData.pawn.body.position.y;
   let directionX = clientData.direction.directionX;
   let directionY = clientData.direction.directionY;
   let distanceTravelled = 0;
