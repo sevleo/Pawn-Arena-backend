@@ -1,4 +1,4 @@
-const { Bodies, Composite, Body, Vector } = require("matter-js");
+const { Bodies, Composite, Body } = require("matter-js");
 const { CANVAS_WIDTH, CANVAS_HEIGHT } = require("../config/gameConstants");
 
 function createPawn(x, y, radius, world) {
