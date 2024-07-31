@@ -3,6 +3,7 @@ const { CANVAS_WIDTH, CANVAS_HEIGHT } = require("../config/gameConstants");
 
 function createPawn(x, y, radius, world) {
   const pawnBody = Bodies.circle(x, y, radius, {
+    label: "Pawn",
     isStatic: false,
     restitution: 0.2,
     friction: 0.5,

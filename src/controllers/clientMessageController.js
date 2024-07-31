@@ -5,7 +5,7 @@ const {
   handleBulletFire,
 } = require("../services/clientActionHandler");
 
-function handleMessage(message, clientData) {
+function handleMessage(message, clientData, world) {
   const msg = JSON.parse(message);
 
   switch (msg.type) {
@@ -19,7 +19,7 @@ function handleMessage(message, clientData) {
       handleFaceDirectionUpdate(msg, clientData);
       break;
     case "fireBullet":
-      handleBulletFire(clientData);
+      handleBulletFire(clientData, world);
       break;
   }
 }

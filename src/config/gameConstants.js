@@ -16,7 +16,7 @@ const INITIAL_POSITION = { x: 200, y: 200 };
 
 // Bullet
 const BULLET_SPEED = 3;
-const BULLET_MAX_DISTANCE = 1000;
+const BULLET_MAX_DISTANCE = 2000;
 
 module.exports = {
   MOVEMENT_SPEED,

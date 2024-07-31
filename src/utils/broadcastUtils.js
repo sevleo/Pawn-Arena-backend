@@ -15,9 +15,18 @@ function broadcastGameState(wss) {
     direction: client.direction,
   }));
 
+  const simplifiedBullets = bullets.map((bullet) => ({
+    clientId: bullet.clientId,
+    radius: bullet.bulletRadius,
+    position: {
+      x: bullet.body.position.x,
+      y: bullet.body.position.y,
+    },
+  }));
+
   const message = JSON.stringify({
     type: "gameState",
-    data: { allPawns, bullets },
+    data: { allPawns, bullets: simplifiedBullets },
   });
 
   wss.clients.forEach((client) => {

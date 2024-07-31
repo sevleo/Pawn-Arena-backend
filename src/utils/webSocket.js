@@ -22,7 +22,7 @@ function setupWebSocket(server, world, engine) {
     sendInitialData(ws, "initial position", clientId);
 
     ws.on("message", (message) => {
-      handleMessage(message, clientData);
+      handleMessage(message, clientData, world);
     });
 
     ws.on("close", () => {
