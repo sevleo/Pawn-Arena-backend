@@ -6,6 +6,7 @@ const { handleMessage } = require("../controllers/clientMessageController");
 const { clients } = require("../services/gameStateService");
 const { setBroadcastGameStateInterval } = require("./broadcastUtils");
 let { nextClientId } = require("../services/gameStateService");
+const { Composite } = require("matter-js");
 
 function setupWebSocket(server, world, engine) {
   const wss = new WebSocket.Server({ server });
@@ -27,6 +28,7 @@ function setupWebSocket(server, world, engine) {
 
     ws.on("close", () => {
       clients.delete(clientId);
+      Composite.remove(world, clientData.pawn.body);
     });
   });
 
@@ -48,7 +50,7 @@ function setupWebSocket(server, world, engine) {
     }
   }
 
-  setUpdateGameStateInterval(engine);
+  setUpdateGameStateInterval(engine, world);
   setBroadcastGameStateInterval(wss);
 
   return wss;
