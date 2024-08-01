@@ -20,11 +20,11 @@ function handleMove(msg, clientData) {
 }
 
 function handleBoost(msg, clientData) {
-  clientData.speed = msg.data ? MOVEMENT_SPEED_BOOST : MOVEMENT_SPEED;
+  clientData.pawn.speed = msg.data ? MOVEMENT_SPEED_BOOST : MOVEMENT_SPEED;
 }
 
 function handleFaceDirectionUpdate(msg, clientData) {
-  clientData.direction = msg.direction;
+  clientData.pawn.direction = msg.direction;
 }
 
 function handleBulletFire(clientData, world) {

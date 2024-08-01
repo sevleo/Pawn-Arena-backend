@@ -7,12 +7,32 @@
 - Add bullet information: clientId // Done
 - Move bullet to a separate model // Done
 - Update line   clients.forEach(updateMovement); // Done
-- Add bullet collision with CU //
+- Add bullet collision with CU // Done
+- Change bullet from circle to line // Done
 
-- Change bullet from circle to line
+
+
 - Add different positions for every new player
 - Add max 10 players
 - Merge "Clients, ClientData, and allPawns" into one entity
 
 - Employ Docker.
 - Employ Redis.
+
+
+The gameplay
+- endless game, big map, up to 200 players on the map
+- each player starts with an initial weapon and health
+- killing a player gives xp equal to 1/3 of his total accumulated xp
+- occasionally xp boosts appear on the map, rewarding players avoiding combat
+- player can spend xp to:
+    Improve stats:
+    - increase max health
+    - health regen
+    - speed of bullets
+    - damage of bullets
+    - reload frequency
+
+    Gain ability:
+    - Invisibility
+    - Teleport

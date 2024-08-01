@@ -7,8 +7,8 @@ const {
 } = require("../config/gameConstants");
 
 function createBullet(clientData, world) {
-  const directionX = clientData.direction.directionX;
-  const directionY = clientData.direction.directionY;
+  const directionX = clientData.pawn.direction.directionX;
+  const directionY = clientData.pawn.direction.directionY;
 
   const x = clientData.pawn.body.position.x;
   const y = clientData.pawn.body.position.y;
@@ -32,11 +32,11 @@ function createBullet(clientData, world) {
     bulletHeight,
     {
       label: "Bullet",
+      clientId: clientData.clientId,
       isStatic: false,
       restitution: 0,
       friction: 0,
       frictionAir: 0,
-      clientId: clientData.clientId,
       angle,
     }
   );

@@ -6,12 +6,7 @@ function createClientData(ws, clientId, world) {
     ws,
     clientId,
     pawn: createPawn(100, 100, 10, world, clientId),
-    direction: {
-      directionX: 0,
-      directionY: 0,
-    },
     lastUpdate: Date.now(),
-    speed: MOVEMENT_SPEED,
     moving: {
       movingRight: false,
       movingLeft: false,
