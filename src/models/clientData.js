@@ -5,7 +5,7 @@ function createClientData(ws, clientId, world) {
   return {
     ws,
     clientId,
-    pawn: createPawn(100, 100, 10, world),
+    pawn: createPawn(100, 100, 10, world, clientId),
     direction: {
       directionX: 0,
       directionY: 0,

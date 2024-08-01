@@ -16,19 +16,28 @@ function createBullet(clientData, world) {
 
   // Offset the bullet's initial position slightly
   const magnitude = Math.sqrt(directionX ** 2 + directionY ** 2);
-  const offsetX = (directionX / magnitude) * (bulletRadius + 10);
-  const offsetY = (directionY / magnitude) * (bulletRadius + 10);
+  const offsetX = (directionX / magnitude) * (bulletRadius + 12);
+  const offsetY = (directionY / magnitude) * (bulletRadius + 12);
 
   const bulletWidth = clientData.pawn.bulletConfig.bulletWidth;
   const bulletHeight = clientData.pawn.bulletConfig.bulletHeight;
 
-  const bulletBody = Bodies.circle(x + offsetX, y + offsetY, bulletRadius, {
-    label: "Bullet",
-    isStatic: false,
-    restitution: 0,
-    friction: 0,
-    frictionAir: 0,
-  });
+  const bulletBody = Bodies.rectangle(
+    x + offsetX,
+    y + offsetY,
+    bulletWidth,
+    bulletHeight,
+    {
+      label: "Bullet",
+      isStatic: false,
+      restitution: 0,
+      friction: 0,
+      frictionAir: 0,
+      clientId: clientData.clientId,
+    }
+  );
+
+  console.log(bulletBody);
 
   // Calculate initial velocity based on direction
   const velocityX = (directionX / magnitude) * BULLET_SPEED;
@@ -46,6 +55,8 @@ function createBullet(clientData, world) {
     body: bulletBody,
     clientId: clientData.clientId,
     bulletRadius,
+    bulletWidth,
+    bulletHeight,
     distanceTravelled: 0,
     update(bullets, index) {
       // Calculate distance travelled

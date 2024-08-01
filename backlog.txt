@@ -9,8 +9,10 @@
 - Update line   clients.forEach(updateMovement); // Done
 - Add bullet collision with CU //
 
+- Change bullet from circle to line
 - Add different positions for every new player
 - Add max 10 players
 - Merge "Clients, ClientData, and allPawns" into one entity
+
 - Employ Docker.
 - Employ Redis.

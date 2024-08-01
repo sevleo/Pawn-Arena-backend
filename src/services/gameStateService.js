@@ -30,6 +30,11 @@ function handleCollisions(world) {
   const collisions = Detector.collisions(detector);
 
   collisions.forEach(({ bodyA, bodyB }) => {
+    console.log(bodyA);
+    console.log(bodyB);
+    if (bodyA.clientId === bodyB.clientId) {
+      return;
+    }
     // Find the bullet in the collision pair
     bullets.forEach((bullet, index) => {
       if (bullet.body === bodyA || bullet.body === bodyB) {

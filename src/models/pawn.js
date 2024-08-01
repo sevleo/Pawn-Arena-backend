@@ -1,13 +1,14 @@
 const { Bodies, Composite, Body } = require("matter-js");
 const { CANVAS_WIDTH, CANVAS_HEIGHT } = require("../config/gameConstants");
 
-function createPawn(x, y, radius, world) {
+function createPawn(x, y, radius, world, clientId) {
   const pawnBody = Bodies.circle(x, y, radius, {
     label: "Pawn",
     isStatic: false,
     restitution: 0.2,
     friction: 0.5,
     frictionAir: 0.1,
+    clientId: clientId,
   });
 
   Composite.add(world, pawnBody);
@@ -17,8 +18,8 @@ function createPawn(x, y, radius, world) {
     radius,
     bulletConfig: {
       bulletRadius: 2,
-      bulletWidth: 1,
-      bulletHeight: 4,
+      bulletWidth: 4,
+      bulletHeight: 10,
     },
     move(clientData) {
       let xForce = 0;
