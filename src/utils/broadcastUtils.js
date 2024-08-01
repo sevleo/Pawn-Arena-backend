@@ -12,7 +12,7 @@ function broadcastGameState(wss) {
       x: client.pawn.body.position.x,
       y: client.pawn.body.position.y,
     },
-    direction: client.direction,
+    direction: client.pawn.direction,
   }));
 
   const simplifiedBullets = bullets.map((bullet) => ({

@@ -38,6 +38,10 @@ function createBullet(clientData, world) {
       friction: 0,
       frictionAir: 0,
       angle,
+      collisionFilter: {
+        category: 0x0001,
+        mask: ~0x0002,
+      },
     }
   );
 

@@ -1,5 +1,9 @@
 const { Bodies, Composite, Body } = require("matter-js");
-const { MOVEMENT_SPEED } = require("../config/gameConstants");
+const {
+  MOVEMENT_SPEED,
+  CANVAS_WIDTH,
+  CANVAS_HEIGHT,
+} = require("../config/gameConstants");
 
 function createPawn(x, y, radius, world, clientId) {
   const pawnBody = Bodies.circle(x, y, radius, {
@@ -9,6 +13,10 @@ function createPawn(x, y, radius, world, clientId) {
     restitution: 0.2,
     friction: 0.5,
     frictionAir: 0.1,
+    collisionFilter: {
+      category: 0x0004,
+      mask: 0x0001 | 0x0002 | 0x0004,
+    },
   });
 
   Composite.add(world, pawnBody);
