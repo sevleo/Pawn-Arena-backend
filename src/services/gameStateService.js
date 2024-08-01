@@ -30,8 +30,6 @@ function handleCollisions(world) {
   const collisions = Detector.collisions(detector);
 
   collisions.forEach(({ bodyA, bodyB }) => {
-    console.log(bodyA);
-    console.log(bodyB);
     if (bodyA.clientId === bodyB.clientId) {
       return;
     }
@@ -47,9 +45,9 @@ function handleCollisions(world) {
             Composite.remove(world, bullet.body);
             bullets.splice(index, 1);
 
-            console.log(
-              `Bullet of player ${bullet.clientId} collided with pawn of player ${clientData.clientId}`
-            );
+            // console.log(
+            //   `Bullet of player ${bullet.clientId} collided with pawn of player ${clientData.clientId}`
+            // );
 
             // Exit the loop early since the bullet has been removed
             return;

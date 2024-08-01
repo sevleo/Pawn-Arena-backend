@@ -17,6 +17,7 @@ function broadcastGameState(wss) {
 
   const simplifiedBullets = bullets.map((bullet) => ({
     clientId: bullet.clientId,
+    angle: bullet.body.angle,
     radius: bullet.bulletRadius,
     width: bullet.bulletWidth,
     height: bullet.bulletHeight,

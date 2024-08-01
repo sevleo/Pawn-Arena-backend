@@ -18,7 +18,7 @@ function createPawn(x, y, radius, world, clientId) {
     radius,
     bulletConfig: {
       bulletRadius: 2,
-      bulletWidth: 4,
+      bulletWidth: 1,
       bulletHeight: 10,
     },
     move(clientData) {

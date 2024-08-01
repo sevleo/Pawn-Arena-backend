@@ -16,11 +16,14 @@ function createBullet(clientData, world) {
 
   // Offset the bullet's initial position slightly
   const magnitude = Math.sqrt(directionX ** 2 + directionY ** 2);
-  const offsetX = (directionX / magnitude) * (bulletRadius + 12);
-  const offsetY = (directionY / magnitude) * (bulletRadius + 12);
+  const offsetX = (directionX / magnitude) * (bulletRadius + 20);
+  const offsetY = (directionY / magnitude) * (bulletRadius + 20);
 
   const bulletWidth = clientData.pawn.bulletConfig.bulletWidth;
   const bulletHeight = clientData.pawn.bulletConfig.bulletHeight;
+
+  // Calculate the angle of rotation
+  const angle = Math.atan2(directionY, directionX);
 
   const bulletBody = Bodies.rectangle(
     x + offsetX,
@@ -34,10 +37,17 @@ function createBullet(clientData, world) {
       friction: 0,
       frictionAir: 0,
       clientId: clientData.clientId,
+      angle,
     }
   );
 
-  console.log(bulletBody);
+  // const bulletBody = Bodies.circle(x + offsetX, y + offsetY, bulletRadius, {
+  //   label: "Bullet",
+  //   isStatic: false,
+  //   restitution: 0,
+  //   friction: 0,
+  //   frictionAir: 0,
+  // });
 
   // Calculate initial velocity based on direction
   const velocityX = (directionX / magnitude) * BULLET_SPEED;
@@ -48,8 +58,6 @@ function createBullet(clientData, world) {
 
   // Add the bullet to the world
   Composite.add(world, bulletBody);
-
-  console.log(world);
 
   return {
     body: bulletBody,
