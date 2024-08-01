@@ -16,8 +16,8 @@ function createBullet(clientData, world) {
 
   // Offset the bullet's initial position slightly
   const magnitude = Math.sqrt(directionX ** 2 + directionY ** 2);
-  const offsetX = (directionX / magnitude) * (bulletRadius + 20);
-  const offsetY = (directionY / magnitude) * (bulletRadius + 20);
+  const offsetX = (directionX / magnitude) * (bulletRadius + 10);
+  const offsetY = (directionY / magnitude) * (bulletRadius + 10);
 
   const bulletWidth = clientData.pawn.bulletConfig.bulletWidth;
   const bulletHeight = clientData.pawn.bulletConfig.bulletHeight;

@@ -16,7 +16,7 @@ function createPawn(x, y, radius, world) {
     body: pawnBody,
     radius,
     bulletConfig: {
-      bulletRadius: 3,
+      bulletRadius: 2,
       bulletWidth: 1,
       bulletHeight: 4,
     },

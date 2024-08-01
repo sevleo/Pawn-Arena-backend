@@ -1,5 +1,5 @@
 const { GAME_SPEED_RATE } = require("../config/gameConstants");
-const { Engine, Collision, Composite, Detector } = require("matter-js");
+const { Engine, Composite, Detector } = require("matter-js");
 
 const clients = new Map();
 const bullets = [];
@@ -15,30 +15,9 @@ function updatePawns() {
 }
 
 // Updates position of bullets and checks for collisions with pawns
-function updateBullets(world) {
+function updateBullets() {
   bullets.forEach((bullet, index) => {
     bullet.update(bullets, index);
-
-    // Check collision with all pawns
-    // clients.forEach((clientData) => {
-    //   const pawnBody = clientData.pawn.body;
-    //   const bulletBody = bullet.body;
-
-    //   // Check for collision using Matter.Collision
-    //   const collision = Collision.collides(bulletBody, pawnBody);
-
-    //   if (collision) {
-    //     Composite.remove(world, bulletBody);
-    //     bullets.splice(index, 1);
-
-    //     console.log(
-    //       `Bullet of player ${bullet.clientId} collided with pawn of player ${clientData.clientId}`
-    //     );
-
-    //     // Exit the loop early since the bullet has been removed
-    //     return;
-    //   }
-    // });
   });
 }
 
@@ -83,9 +62,8 @@ function updateGameState(engine, world) {
 
   updatePawns();
   updateBullets(world);
-  Engine.update(engine, delta);
-
   handleCollisions(world);
+  Engine.update(engine, delta);
 }
 
 function setUpdateGameStateInterval(engine, world) {

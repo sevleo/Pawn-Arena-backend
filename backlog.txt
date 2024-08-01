@@ -7,8 +7,8 @@
 - Add bullet information: clientId // Done
 - Move bullet to a separate model // Done
 - Update line   clients.forEach(updateMovement); // Done
+- Add bullet collision with CU //
 
-- Add bullet collision with CU
 - Add different positions for every new player
 - Add max 10 players
 - Merge "Clients, ClientData, and allPawns" into one entity
