@@ -14,8 +14,9 @@
 - Add max of players config // Done
 
 
-- Employ Docker.
+
 - Employ Redis.
+- Employ Docker.
 
 
 The gameplay

@@ -1,4 +1,5 @@
 const { GAME_SPEED_RATE } = require("../config/gameConstants");
+const { redisClient } = require("../utils/redisClient");
 const { Engine, Composite, Detector } = require("matter-js");
 
 const clients = new Map();
@@ -20,6 +21,7 @@ function updateGameState(engine, world) {
   updateBullets(world);
   handleCollisions(world);
   Engine.update(engine, delta);
+  saveGameStateToRedis();
 }
 
 module.exports = {
@@ -27,7 +29,51 @@ module.exports = {
   clients,
   bullets,
   setUpdateGameStateInterval,
+  // loadGameStateFromRedis,
 };
+
+function saveGameStateToRedis() {
+  const state = {
+    allPawns: Array.from(clients.entries()).map(([id, client]) => ({
+      clientId: id,
+      radius: client.pawn.radius,
+      position: {
+        x: client.pawn.body.position.x,
+        y: client.pawn.body.position.y,
+      },
+      direction: client.pawn.direction,
+    })),
+
+    bullets: bullets.map((bullet) => ({
+      clientId: bullet.clientId,
+      angle: bullet.body.angle,
+      radius: bullet.bulletRadius,
+      width: bullet.bulletWidth,
+      height: bullet.bulletHeight,
+      position: {
+        x: bullet.body.position.x,
+        y: bullet.body.position.y,
+      },
+    })),
+  };
+
+  redisClient.set("gameState", JSON.stringify(state), (err) => {
+    if (err) {
+      console.error("Failed to save game state to Redis: ", err);
+    }
+  });
+}
+
+// For game saving
+// function loadGameStateFromRedis() {
+//   redisClient.get("gameState", (err, reply) => {
+//     if (err) {
+//       console.error("Failed to load game state from Redis: ", err);
+//     } else if (reply) {
+//       const state = JSON.parse(reply);
+//     }
+//   });
+// }
 
 // Updates position of pawns
 function updatePawns() {

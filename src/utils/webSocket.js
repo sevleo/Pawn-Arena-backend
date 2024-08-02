@@ -12,11 +12,10 @@ const { Composite } = require("matter-js");
 
 function setupWebSocket(server, world) {
   const wss = new WebSocket.Server({ server });
+  console.log("Start Websocket server");
 
   wss.on("connection", (ws) => {
     // Assign clientId and clientData to new connection
-    console.log(clients);
-    console.log(clients.size + 1);
     if (clients.size + 1 >= MAX_PLAYERS) {
       return;
     }
