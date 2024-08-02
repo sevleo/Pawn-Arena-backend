@@ -21,7 +21,7 @@ function updateGameState(engine, world) {
   updateBullets(world);
   handleCollisions(world);
   Engine.update(engine, delta);
-  saveGameStateToRedis();
+  // saveGameStateToRedis();
 }
 
 module.exports = {
@@ -31,37 +31,37 @@ module.exports = {
   setUpdateGameStateInterval,
 };
 
-function saveGameStateToRedis() {
-  const state = {
-    allPawns: Array.from(clients.entries()).map(([id, client]) => ({
-      clientId: id,
-      radius: client.pawn.radius,
-      position: {
-        x: client.pawn.body.position.x,
-        y: client.pawn.body.position.y,
-      },
-      direction: client.pawn.direction,
-    })),
+// function saveGameStateToRedis() {
+//   const state = {
+//     allPawns: Array.from(clients.entries()).map(([id, client]) => ({
+//       clientId: id,
+//       radius: client.pawn.radius,
+//       position: {
+//         x: client.pawn.body.position.x,
+//         y: client.pawn.body.position.y,
+//       },
+//       direction: client.pawn.direction,
+//     })),
 
-    bullets: bullets.map((bullet) => ({
-      clientId: bullet.clientId,
-      angle: bullet.body.angle,
-      radius: bullet.bulletRadius,
-      width: bullet.bulletWidth,
-      height: bullet.bulletHeight,
-      position: {
-        x: bullet.body.position.x,
-        y: bullet.body.position.y,
-      },
-    })),
-  };
+//     bullets: bullets.map((bullet) => ({
+//       clientId: bullet.clientId,
+//       angle: bullet.body.angle,
+//       radius: bullet.bulletRadius,
+//       width: bullet.bulletWidth,
+//       height: bullet.bulletHeight,
+//       position: {
+//         x: bullet.body.position.x,
+//         y: bullet.body.position.y,
+//       },
+//     })),
+//   };
 
-  redisClient.set("gameState", JSON.stringify(state), (err) => {
-    if (err) {
-      console.error("Failed to save game state to Redis: ", err);
-    }
-  });
-}
+//   redisClient.set("gameState", JSON.stringify(state), (err) => {
+//     if (err) {
+//       console.error("Failed to save game state to Redis: ", err);
+//     }
+//   });
+// }
 
 // Updates position of pawns
 function updatePawns() {

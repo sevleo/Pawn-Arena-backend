@@ -25,18 +25,27 @@ const engine = Engine.create();
 const world = engine.world;
 createWorld(world, engine);
 
+const webSocket = setupWebSocket(server, world);
+
+setUpdateGameStateInterval(engine, world);
+setBroadcastGameStateInterval(webSocket);
+
+server.listen(3000, () => {
+  console.log("Listening at :3000...");
+});
+
 // Ensure Redis is connected before starting the server
-connectRedis()
-  .then(() => {
-    const webSocket = setupWebSocket(server, world);
+// connectRedis()
+//   .then(() => {
+//     const webSocket = setupWebSocket(server, world);
 
-    setUpdateGameStateInterval(engine, world);
-    setBroadcastGameStateInterval(webSocket);
+//     setUpdateGameStateInterval(engine, world);
+//     setBroadcastGameStateInterval(webSocket);
 
-    server.listen(3000, () => {
-      console.log("Listening at :3000...");
-    });
-  })
-  .catch((err) => {
-    console.error("Failed to start server:", err);
-  });
+//     server.listen(3000, () => {
+//       console.log("Listening at :3000...");
+//     });
+//   })
+//   .catch((err) => {
+//     console.error("Failed to start server:", err);
+//   });
