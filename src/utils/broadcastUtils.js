@@ -3,6 +3,14 @@ const { BROADCAST_RATE_INTERVAL } = require("../config/gameConstants");
 
 const { clients, bullets } = require("../services/gameStateService");
 
+function setBroadcastGameStateInterval(wss) {
+  setInterval(() => broadcastGameState(wss), BROADCAST_RATE_INTERVAL);
+}
+
+module.exports = {
+  setBroadcastGameStateInterval,
+};
+
 // Broadcast the updated position to all clients
 function broadcastGameState(wss) {
   const allPawns = Array.from(clients.entries()).map(([id, client]) => ({
@@ -38,11 +46,3 @@ function broadcastGameState(wss) {
     }
   });
 }
-
-function setBroadcastGameStateInterval(wss) {
-  setInterval(() => broadcastGameState(wss), BROADCAST_RATE_INTERVAL);
-}
-
-module.exports = {
-  setBroadcastGameStateInterval,
-};

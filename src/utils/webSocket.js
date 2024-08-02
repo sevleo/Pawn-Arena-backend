@@ -1,14 +1,12 @@
 const WebSocket = require("ws");
 const { CANVAS_WIDTH, CANVAS_HEIGHT } = require("../config/gameConstants");
 const createClientData = require("../models/clientData");
-const { setUpdateGameStateInterval } = require("../services/gameStateService");
 const { handleMessage } = require("../controllers/clientMessageController");
 const { clients } = require("../services/gameStateService");
-const { setBroadcastGameStateInterval } = require("./broadcastUtils");
 let { nextClientId } = require("../services/gameStateService");
 const { Composite } = require("matter-js");
 
-function setupWebSocket(server, world, engine) {
+function setupWebSocket(server, world) {
   const wss = new WebSocket.Server({ server });
 
   wss.on("connection", (ws) => {
@@ -49,9 +47,6 @@ function setupWebSocket(server, world, engine) {
       );
     }
   }
-
-  setUpdateGameStateInterval(engine, world);
-  setBroadcastGameStateInterval(wss);
 
   return wss;
 }

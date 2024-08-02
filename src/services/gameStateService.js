@@ -4,8 +4,30 @@ const { Engine, Composite, Detector } = require("matter-js");
 const clients = new Map();
 const bullets = [];
 let nextClientId = 0;
-
 let lastTime;
+
+function setUpdateGameStateInterval(engine, world) {
+  lastTime = Date.now();
+  setInterval(() => updateGameState(engine, world), GAME_SPEED_RATE);
+}
+
+function updateGameState(engine, world) {
+  const now = Date.now();
+  const delta = now - lastTime;
+  lastTime = now;
+
+  updatePawns();
+  updateBullets(world);
+  handleCollisions(world);
+  Engine.update(engine, delta);
+}
+
+module.exports = {
+  nextClientId,
+  clients,
+  bullets,
+  setUpdateGameStateInterval,
+};
 
 // Updates position of pawns
 function updatePawns() {
@@ -57,26 +79,3 @@ function handleCollisions(world) {
     });
   });
 }
-
-function updateGameState(engine, world) {
-  const now = Date.now();
-  const delta = now - lastTime;
-  lastTime = now;
-
-  updatePawns();
-  updateBullets(world);
-  handleCollisions(world);
-  Engine.update(engine, delta);
-}
-
-function setUpdateGameStateInterval(engine, world) {
-  lastTime = Date.now();
-  setInterval(() => updateGameState(engine, world), GAME_SPEED_RATE);
-}
-
-module.exports = {
-  nextClientId,
-  clients,
-  bullets,
-  setUpdateGameStateInterval,
-};
