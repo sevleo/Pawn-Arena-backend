@@ -14,7 +14,8 @@ const GAME_SPEED_RATE = 10;
 const BROADCAST_RATE_INTERVAL = 10;
 const THROTTLING_INTERVAL = 0;
 
-// Controllable unit
+// Pawn
+const RADIUS = 10;
 const MOVEMENT_SPEED = 0.0004;
 const MOVEMENT_SPEED_BOOST = 0.0008;
 const INITIAL_POSITION = { x: 200, y: 200 };
@@ -24,6 +25,7 @@ const BULLET_SPEED = 5;
 const BULLET_MAX_DISTANCE = 5000;
 
 module.exports = {
+  RADIUS,
   MOVEMENT_SPEED,
   MOVEMENT_SPEED_BOOST,
   INITIAL_POSITION,

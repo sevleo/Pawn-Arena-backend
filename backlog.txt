@@ -9,13 +9,13 @@
 - Update line   clients.forEach(updateMovement); // Done
 - Add bullet collision with CU // Done
 - Change bullet from circle to line // Done
+- Add walls & setup collision rules for walls // Done
+- Add different positions for every new player // Done
 
 
-- Add walls & setup collision rules for walls
 
-- Add different positions for every new player
 - Add max 10 players
-- Merge "Clients, ClientData, and allPawns" into one entity
+
 
 - Employ Docker.
 - Employ Redis.

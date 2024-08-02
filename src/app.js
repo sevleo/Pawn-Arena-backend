@@ -5,7 +5,6 @@ const setupWebSocket = require("../src/utils/webSocket");
 const { Engine } = require("matter-js");
 const { setUpdateGameStateInterval } = require("./services/gameStateService");
 const { setBroadcastGameStateInterval } = require("./utils/broadcastUtils");
-
 const { createWorld } = require("./services/createWorld");
 
 const app = express();
