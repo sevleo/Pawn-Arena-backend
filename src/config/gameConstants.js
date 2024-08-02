@@ -9,6 +9,7 @@ const CANVAS_HEIGHT = 800;
 
 // Game
 const GAME_SPEED_RATE = 10;
+const MAX_PLAYERS = 5;
 
 // Websocket connection
 const BROADCAST_RATE_INTERVAL = 10;
@@ -39,4 +40,5 @@ module.exports = {
   BULLET_CATEGORY,
   WALL_CATEGORY,
   PAWN_CATEGORY,
+  MAX_PLAYERS,
 };

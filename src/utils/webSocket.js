@@ -1,5 +1,9 @@
 const WebSocket = require("ws");
-const { CANVAS_WIDTH, CANVAS_HEIGHT } = require("../config/gameConstants");
+const {
+  CANVAS_WIDTH,
+  CANVAS_HEIGHT,
+  MAX_PLAYERS,
+} = require("../config/gameConstants");
 const createClientData = require("../models/clientData");
 const { handleMessage } = require("../controllers/clientMessageController");
 const { clients } = require("../services/gameStateService");
@@ -11,6 +15,11 @@ function setupWebSocket(server, world) {
 
   wss.on("connection", (ws) => {
     // Assign clientId and clientData to new connection
+    console.log(clients);
+    console.log(clients.size + 1);
+    if (clients.size + 1 >= MAX_PLAYERS) {
+      return;
+    }
     const clientId = nextClientId++;
     const clientData = createClientData(ws, clientId, world);
 
