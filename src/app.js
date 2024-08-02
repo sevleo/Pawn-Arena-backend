@@ -6,8 +6,7 @@ const { Engine } = require("matter-js");
 const { setUpdateGameStateInterval } = require("./services/gameStateService");
 const { setBroadcastGameStateInterval } = require("./utils/broadcastUtils");
 const { createWorld } = require("./services/createWorld");
-
-const { redisClient, connectRedis } = require("./utils/redisClient");
+const { connectRedis } = require("./utils/redisClient");
 
 const app = express();
 const server = http.createServer(app);

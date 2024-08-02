@@ -29,7 +29,6 @@ module.exports = {
   clients,
   bullets,
   setUpdateGameStateInterval,
-  // loadGameStateFromRedis,
 };
 
 function saveGameStateToRedis() {
@@ -63,17 +62,6 @@ function saveGameStateToRedis() {
     }
   });
 }
-
-// For game saving
-// function loadGameStateFromRedis() {
-//   redisClient.get("gameState", (err, reply) => {
-//     if (err) {
-//       console.error("Failed to load game state from Redis: ", err);
-//     } else if (reply) {
-//       const state = JSON.parse(reply);
-//     }
-//   });
-// }
 
 // Updates position of pawns
 function updatePawns() {
