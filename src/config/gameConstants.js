@@ -1,3 +1,8 @@
+// Body categories
+const BULLET_CATEGORY = 0x0001;
+const WALL_CATEGORY = 0x0002;
+const PAWN_CATEGORY = 0x0004;
+
 // Canvas
 const CANVAS_WIDTH = 800;
 const CANVAS_HEIGHT = 800;
@@ -15,8 +20,8 @@ const MOVEMENT_SPEED_BOOST = 0.0008;
 const INITIAL_POSITION = { x: 200, y: 200 };
 
 // Bullet
-const BULLET_SPEED = 1;
-const BULLET_MAX_DISTANCE = 2000;
+const BULLET_SPEED = 5;
+const BULLET_MAX_DISTANCE = 5000;
 
 module.exports = {
   MOVEMENT_SPEED,
@@ -29,4 +34,7 @@ module.exports = {
   CANVAS_HEIGHT,
   BULLET_SPEED,
   BULLET_MAX_DISTANCE,
+  BULLET_CATEGORY,
+  WALL_CATEGORY,
+  PAWN_CATEGORY,
 };

@@ -3,6 +3,9 @@ const {
   MOVEMENT_SPEED,
   CANVAS_WIDTH,
   CANVAS_HEIGHT,
+  PAWN_CATEGORY,
+  BULLET_CATEGORY,
+  WALL_CATEGORY,
 } = require("../config/gameConstants");
 
 function createPawn(x, y, radius, world, clientId) {
@@ -14,8 +17,7 @@ function createPawn(x, y, radius, world, clientId) {
     friction: 0.5,
     frictionAir: 0.1,
     collisionFilter: {
-      category: 0x0004,
-      mask: 0x0001 | 0x0002 | 0x0004,
+      category: PAWN_CATEGORY,
     },
   });
 

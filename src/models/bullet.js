@@ -4,6 +4,9 @@ const {
   BULLET_MAX_DISTANCE,
   CANVAS_WIDTH,
   CANVAS_HEIGHT,
+  BULLET_CATEGORY,
+  PAWN_CATEGORY,
+  WALL_CATEGORY,
 } = require("../config/gameConstants");
 
 function createBullet(clientData, world) {
@@ -39,8 +42,8 @@ function createBullet(clientData, world) {
       frictionAir: 0,
       angle,
       collisionFilter: {
-        category: 0x0001,
-        mask: ~0x0002,
+        category: BULLET_CATEGORY,
+        mask: PAWN_CATEGORY,
       },
     }
   );

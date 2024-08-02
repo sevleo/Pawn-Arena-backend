@@ -11,6 +11,7 @@
 - Change bullet from circle to line // Done
 
 
+- Add walls & setup collision rules for walls
 
 - Add different positions for every new player
 - Add max 10 players
