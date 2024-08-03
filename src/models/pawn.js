@@ -1,5 +1,9 @@
 const { Bodies, Composite, Body } = require("matter-js");
-const { MOVEMENT_SPEED, PAWN_CATEGORY } = require("../config/gameConstants");
+const {
+  MOVEMENT_SPEED,
+  PAWN_CATEGORY,
+  STARTING_HEALTH,
+} = require("../config/gameConstants");
 
 function createPawn(x, y, radius, world, clientId) {
   const pawnBody = Bodies.circle(x, y, radius, {
@@ -19,7 +23,7 @@ function createPawn(x, y, radius, world, clientId) {
   return {
     body: pawnBody,
     clientId: clientId,
-    health: 10,
+    health: STARTING_HEALTH,
     speed: MOVEMENT_SPEED,
     direction: {
       directionX: 0,

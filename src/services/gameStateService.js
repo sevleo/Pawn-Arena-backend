@@ -100,6 +100,15 @@ function handleCollisions(world) {
             // Remove the bullet from the world and the bullets array
             Composite.remove(world, bullet.body);
             bullets.splice(index, 1);
+            clientData.pawn.health -= 1;
+
+            if (clientData.pawn.health === 0) {
+              console.log(`${clientData.clientId} is dead`);
+            } else {
+              console.log(
+                `${clientData.clientId} has ${clientData.pawn.health} HP remaining.`
+              );
+            }
 
             // console.log(
             //   `Bullet of player ${bullet.clientId} collided with pawn of player ${clientData.clientId}`

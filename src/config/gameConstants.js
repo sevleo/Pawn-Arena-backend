@@ -20,6 +20,7 @@ const RADIUS = 10;
 const MOVEMENT_SPEED = 0.0004;
 const MOVEMENT_SPEED_BOOST = 0.0008;
 const INITIAL_POSITION = { x: 200, y: 200 };
+const STARTING_HEALTH = 5;
 
 // Bullet
 const BULLET_SPEED = 5;
@@ -41,4 +42,5 @@ module.exports = {
   WALL_CATEGORY,
   PAWN_CATEGORY,
   MAX_PLAYERS,
+  STARTING_HEALTH,
 };
