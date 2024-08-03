@@ -12,10 +12,9 @@
 - Add walls & setup collision rules for walls // Done
 - Add different positions for every new player // Done
 - Add max of players config // Done
+- Employ Redis // TBD
 
 
-
-- Employ Redis.
 - Employ Docker.
 
 

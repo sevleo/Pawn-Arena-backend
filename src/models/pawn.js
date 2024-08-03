@@ -19,6 +19,7 @@ function createPawn(x, y, radius, world, clientId) {
   return {
     body: pawnBody,
     clientId: clientId,
+    health: 10,
     speed: MOVEMENT_SPEED,
     direction: {
       directionX: 0,
