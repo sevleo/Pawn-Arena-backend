@@ -35,8 +35,13 @@ function setupWebSocket(server, world) {
     });
 
     ws.on("close", () => {
+      console.log(`Client ${clientId} disconnected`);
       clients.delete(clientId);
       Composite.remove(world, clientData.pawn.body);
+    });
+
+    ws.on("error", (error) => {
+      console.error(`WebSocket error for client ${clientId}:`, error);
     });
   });
 
