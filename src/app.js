@@ -1,3 +1,4 @@
+require("dotenv").config();
 const cors = require("cors");
 const express = require("express");
 const http = require("http");
@@ -32,8 +33,11 @@ console.log(webSocket);
 setUpdateGameStateInterval(engine, world);
 setBroadcastGameStateInterval(webSocket);
 
-server.listen(3000, () => {
-  console.log("Listening at :3000...");
+const PORT = process.env.PORT || 3000;
+
+// Start the HTTP server and listen on the specified port
+server.listen(PORT, () => {
+  console.log(`Listening at port ${PORT}...`);
 });
 
 // Ensure Redis is connected before starting the server
