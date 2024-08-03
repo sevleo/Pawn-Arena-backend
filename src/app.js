@@ -27,6 +27,8 @@ createWorld(world, engine);
 
 const webSocket = setupWebSocket(server, world);
 
+console.log(webSocket);
+
 setUpdateGameStateInterval(engine, world);
 setBroadcastGameStateInterval(webSocket);
 

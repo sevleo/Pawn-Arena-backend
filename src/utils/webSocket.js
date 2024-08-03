@@ -19,8 +19,10 @@ function setupWebSocket(server, world) {
     if (clients.size + 1 >= MAX_PLAYERS) {
       return;
     }
+
     const clientId = nextClientId++;
     const clientData = createClientData(ws, clientId, world);
+    ws.clientData = clientData;
 
     // Add new connection to clients map
     clients.set(clientId, clientData);

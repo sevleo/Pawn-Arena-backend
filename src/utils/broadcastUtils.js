@@ -22,6 +22,7 @@ function broadcastGameState(wss) {
       y: client.pawn.body.position.y,
     },
     direction: client.pawn.direction,
+    health: client.pawn.health,
   }));
 
   const simplifiedBullets = bullets.map((bullet) => ({
@@ -36,13 +37,16 @@ function broadcastGameState(wss) {
     },
   }));
 
-  const message = JSON.stringify({
-    type: "gameState",
-    data: { allPawns, bullets: simplifiedBullets },
-  });
-
   wss.clients.forEach((client) => {
     if (client.readyState === WebSocket.OPEN) {
+      const data = {
+        allPawns,
+        bullets: simplifiedBullets,
+        clientData: {
+          health: client.clientData.pawn.health,
+        },
+      };
+      const message = JSON.stringify({ type: "gameState", data });
       client.send(message);
     }
   });
