@@ -36,7 +36,7 @@ setBroadcastGameStateInterval(webSocket);
 const PORT = process.env.PORT || 3000;
 
 // Start the HTTP server and listen on the specified port
-server.listen(PORT, () => {
+server.listen(PORT, "0.0.0.0", () => {
   console.log(`Listening at port ${PORT}...`);
 });
 
