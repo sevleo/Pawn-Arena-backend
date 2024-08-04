@@ -7,7 +7,6 @@ const { Engine } = require("matter-js");
 const { setUpdateGameStateInterval } = require("./services/gameStateService");
 const { setBroadcastGameStateInterval } = require("./utils/broadcastUtils");
 const { createWorld } = require("./services/createWorld");
-const { connectRedis } = require("./utils/redisClient");
 
 const app = express();
 const server = http.createServer(app);
@@ -26,37 +25,16 @@ const engine = Engine.create();
 const world = engine.world;
 createWorld(world, engine);
 
-// const webSocket = setupWebSocket(server, world);
+const webSocket = setupWebSocket(server, world);
 
-// console.log(webSocket);
+console.log(webSocket);
 
-// setUpdateGameStateInterval(engine, world);
-// setBroadcastGameStateInterval(webSocket);
+setUpdateGameStateInterval(engine, world);
+setBroadcastGameStateInterval(webSocket);
 
-// const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
-// // Start the HTTP server and listen on the specified port
-// server.listen(PORT, "0.0.0.0", () => {
-//   console.log(`Listening at port ${PORT}...`);
-// });
-
-// Ensure Redis is connected before starting the server
-connectRedis()
-  .then(() => {
-    const webSocket = setupWebSocket(server, world);
-
-    console.log(webSocket);
-
-    setUpdateGameStateInterval(engine, world);
-    setBroadcastGameStateInterval(webSocket);
-
-    const PORT = process.env.PORT || 3000;
-
-    // Start the HTTP server and listen on the specified port
-    server.listen(PORT, "0.0.0.0", () => {
-      console.log(`Listening at port ${PORT}...`);
-    });
-  })
-  .catch((err) => {
-    console.error("Failed to start server:", err);
-  });
+// Start the HTTP server and listen on the specified port
+server.listen(PORT, "0.0.0.0", () => {
+  console.log(`Listening at port ${PORT}...`);
+});
