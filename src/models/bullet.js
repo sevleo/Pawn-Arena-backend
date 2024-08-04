@@ -9,21 +9,18 @@ const {
   WALL_CATEGORY,
 } = require("../config/gameConstants");
 
-function createBullet(clientData, world, faceDirection) {
-  console.log(faceDirection);
-  console.log({
-    directionX: clientData.pawn.direction.directionX,
-    directionY: clientData.pawn.direction.directionY,
-  });
-
+function createBullet(clientData, world, faceDirection, position) {
   // const directionX = clientData.pawn.direction.directionX;
   // const directionY = clientData.pawn.direction.directionY;
+  // const x = clientData.pawn.body.position.x;
+  // const y = clientData.pawn.body.position.y;
 
   const directionX = faceDirection.directionX;
   const directionY = faceDirection.directionY;
 
-  const x = clientData.pawn.body.position.x;
-  const y = clientData.pawn.body.position.y;
+  const x = position.x;
+  const y = position.y;
+
   const bulletRadius = clientData.pawn.bulletConfig.bulletRadius;
 
   // Offset the bullet's initial position slightly

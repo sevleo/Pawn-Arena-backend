@@ -44,6 +44,7 @@ function broadcastGameState(wss) {
         bullets: simplifiedBullets,
         clientPawn: {
           health: client.clientData.pawn.health,
+          position: client.clientData.pawn.body.position,
         },
       };
       const message = JSON.stringify({ type: "gameState", data });
