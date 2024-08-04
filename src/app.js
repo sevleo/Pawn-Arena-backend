@@ -7,6 +7,7 @@ const { Engine } = require("matter-js");
 const { setUpdateGameStateInterval } = require("./services/gameStateService");
 const { setBroadcastGameStateInterval } = require("./utils/broadcastUtils");
 const { createWorld } = require("./services/createWorld");
+const redis = require("redis");
 
 const app = express();
 const server = http.createServer(app);
@@ -25,9 +26,44 @@ const engine = Engine.create();
 const world = engine.world;
 createWorld(world, engine);
 
-const webSocket = setupWebSocket(server, world);
+let connections = [];
+
+const subscriber = redis.createClient({ port: 6379, host: "rds" });
+const publisher = redis.createClient({ port: 6379, host: "rds" });
+
+subscriber.connect();
+publisher.connect();
+
+subscriber.on("connect", () => {
+  console.log("Subscriber connected to Redis");
+});
+
+publisher.on("connect", () => {
+  console.log("Publisher connected to Redis");
+});
+
+subscriber.on("subscribe", function (channel, count) {
+  console.log("Server subscribed successfully");
+  publisher.publish("livechat", "a message");
+});
+
+subscriber.on("message", function (channel, message) {
+  try {
+    console.log(`Server received message in channel ${channel}`);
+    connections.forEach((c) => c.send(message));
+  } catch (ex) {
+    console.log("Err:" + ex);
+  }
+});
+
+subscriber.subscribe("livechat");
+
+const webSocket = setupWebSocket(server, world, connections, publisher);
 
 console.log(webSocket);
+console.log(redis);
+console.log(subscriber);
+console.log(publisher);
 
 setUpdateGameStateInterval(engine, world);
 setBroadcastGameStateInterval(webSocket);

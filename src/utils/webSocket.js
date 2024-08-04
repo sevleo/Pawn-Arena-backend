@@ -10,7 +10,8 @@ const { clients } = require("../services/gameStateService");
 let { nextClientId } = require("../services/gameStateService");
 const { Composite } = require("matter-js");
 
-function setupWebSocket(server, world) {
+function setupWebSocket(server, world, connections, publisher) {
+  console.log(publisher);
   const wss = new WebSocket.Server({ server });
   console.log("Start Websocket server");
 
@@ -24,6 +25,8 @@ function setupWebSocket(server, world) {
     const clientData = createClientData(ws, clientId, world);
     ws.clientData = clientData;
 
+    console.log(`Client ${clientId} connected`);
+
     // Add new connection to clients map
     clients.set(clientId, clientData);
 
@@ -32,6 +35,7 @@ function setupWebSocket(server, world) {
 
     ws.on("message", (message) => {
       handleMessage(message, clientData, world);
+      // publisher.publish("livechat", message);
     });
 
     ws.on("close", () => {
@@ -43,6 +47,8 @@ function setupWebSocket(server, world) {
     ws.on("error", (error) => {
       console.error(`WebSocket error for client ${clientId}:`, error);
     });
+
+    connections.push(ws);
   });
 
   // Broadcast the updated position to a specific client
