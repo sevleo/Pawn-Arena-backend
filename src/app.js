@@ -26,25 +26,10 @@ const engine = Engine.create();
 const world = engine.world;
 createWorld(world, engine);
 
-// const webSocket = setupWebSocket(server, world);
-
-// console.log(webSocket);
-
-// setUpdateGameStateInterval(engine, world);
-// setBroadcastGameStateInterval(webSocket);
-
-// const PORT = process.env.PORT || 3000;
-
-// // Start the HTTP server and listen on the specified port
-// server.listen(PORT, "0.0.0.0", () => {
-//   console.log(`Listening at port ${PORT}...`);
-// });
-
+const webSocket = setupWebSocket(server, world);
 // Ensure Redis is connected before starting the server
 connectRedis()
   .then(() => {
-    const webSocket = setupWebSocket(server, world);
-
     console.log(webSocket);
 
     setUpdateGameStateInterval(engine, world);

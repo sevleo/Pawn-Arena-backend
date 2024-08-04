@@ -1,14 +1,15 @@
 const redis = require("redis");
 
-const redisClient = redis.createClient();
+const publisher = redis.createClient();
+const subscriber = redis.createClient();
 
-redisClient.on("error", (err) => {
-  console.error("Redis error:", err);
-});
+publisher.on("error", (err) => console.error("Redis publisher error:", err));
+subscriber.on("error", (err) => console.error("Redis subscriber error:", err));
 
 async function connectRedis() {
   try {
-    await redisClient.connect();
+    await publisher.connect();
+    await subscriber.connect();
     console.log("Connected to Redis");
   } catch (err) {
     console.error("Failed to connect to Redis:", err);
@@ -17,6 +18,7 @@ async function connectRedis() {
 }
 
 module.exports = {
-  redisClient,
+  publisher,
+  subscriber,
   connectRedis,
 };

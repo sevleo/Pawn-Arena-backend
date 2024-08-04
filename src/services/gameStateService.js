@@ -1,5 +1,5 @@
 const { GAME_SPEED_RATE } = require("../config/gameConstants");
-const { redisClient } = require("../utils/redisClient");
+const { publisher } = require("../utils/redisClient");
 const { Engine, Composite, Detector } = require("matter-js");
 
 const clients = new Map();
@@ -57,7 +57,7 @@ function saveGameStateToRedis() {
     })),
   };
 
-  redisClient.set("gameState", JSON.stringify(state), (err) => {
+  publisher.set("gameState", JSON.stringify(state), (err) => {
     if (err) {
       console.error("Failed to save game state to Redis: ", err);
     }
