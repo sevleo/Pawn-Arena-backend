@@ -19,7 +19,7 @@ function handleMessage(message, clientData, world) {
       handleFaceDirectionUpdate(msg, clientData);
       break;
     case "fireBullet":
-      handleBulletFire(clientData, world);
+      handleBulletFire(clientData, world, msg);
       break;
   }
 }

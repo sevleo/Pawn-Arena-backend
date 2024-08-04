@@ -27,8 +27,8 @@ function handleFaceDirectionUpdate(msg, clientData) {
   clientData.pawn.direction = msg.direction;
 }
 
-function handleBulletFire(clientData, world) {
-  const bullet = createBullet(clientData, world);
+function handleBulletFire(clientData, world, msg) {
+  const bullet = createBullet(clientData, world, msg.faceDirection);
   bullets.push(bullet);
 }
 

@@ -42,7 +42,7 @@ function broadcastGameState(wss) {
       const data = {
         allPawns,
         bullets: simplifiedBullets,
-        clientData: {
+        clientPawn: {
           health: client.clientData.pawn.health,
         },
       };
