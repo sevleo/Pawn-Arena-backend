@@ -12,10 +12,7 @@
 - Add walls & setup collision rules for walls // Done
 - Add different positions for every new player // Done
 - Add max of players config // Done
-- Employ Redis // TBD
 
-
-- Employ Docker.
 
 
 The gameplay
@@ -34,3 +31,12 @@ The gameplay
     Gain ability:
     - Invisibility
     - Teleport
+
+
+Scalability:
+- Employ Redis
+    - Create a simple game and run on multiple servers - use pub/sub of redis to
+      exchange data state between servers.
+      Look in "redis-old-implementation" branch for working publish/sub implementation.
+      No need to do it now.
+- Employ Docker
