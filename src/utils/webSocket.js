@@ -24,6 +24,8 @@ function setupWebSocket(server, world) {
     const clientData = createClientData(ws, clientId, world);
     ws.clientData = clientData;
 
+    console.log(`Client ${clientId} connected`);
+
     // Add new connection to clients map
     clients.set(clientId, clientData);
 

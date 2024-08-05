@@ -13,7 +13,7 @@ module.exports = {
 async function broadcastGameState(wss) {
   const gameState = await publisher.get("gameState");
   const parsedGameState = JSON.parse(gameState);
-  console.log(parsedGameState);
+  // console.log(parsedGameState);
   wss.clients.forEach((client) => {
     if (client.readyState === WebSocket.OPEN) {
       const data = {
