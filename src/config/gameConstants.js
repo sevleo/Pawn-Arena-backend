@@ -4,8 +4,8 @@ const WALL_CATEGORY = 0x0002;
 const PAWN_CATEGORY = 0x0004;
 
 // Canvas
-const CANVAS_WIDTH = 800;
-const CANVAS_HEIGHT = 800;
+const CANVAS_WIDTH = 2000;
+const CANVAS_HEIGHT = 2000;
 
 // Game
 const GAME_SPEED_RATE = 10;
@@ -24,7 +24,7 @@ const STARTING_HEALTH = 5;
 
 // Bullet
 const BULLET_SPEED = 5;
-const BULLET_MAX_DISTANCE = 5000;
+const BULLET_MAX_DISTANCE = Infinity;
 
 module.exports = {
   RADIUS,
