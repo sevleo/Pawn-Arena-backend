@@ -12,10 +12,10 @@
 - Add walls & setup collision rules for walls // Done
 - Add different positions for every new player // Done
 - Add max of players config // Done
+- Increase size of game board // Done
+- Make movable screen // Done
 
 
-- Increase size of game board
-- Make movable screen
 
 
 
