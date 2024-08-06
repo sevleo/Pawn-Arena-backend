@@ -11,16 +11,16 @@ const {
 
 function createBullet(clientData, world, faceDirection, position) {
   // Take direction/position from backend
-  const directionX = clientData.pawn.direction.directionX;
-  const directionY = clientData.pawn.direction.directionY;
-  const x = clientData.pawn.body.position.x;
-  const y = clientData.pawn.body.position.y;
+  // const directionX = clientData.pawn.direction.directionX;
+  // const directionY = clientData.pawn.direction.directionY;
+  // const x = clientData.pawn.body.position.x;
+  // const y = clientData.pawn.body.position.y;
 
-  // // Take direction/position from frontend
-  // const directionX = faceDirection.directionX;
-  // const directionY = faceDirection.directionY;
-  // const x = position.x;
-  // const y = position.y;
+  // Take direction/position from frontend
+  const directionX = faceDirection.directionX;
+  const directionY = faceDirection.directionY;
+  const x = position.x;
+  const y = position.y;
 
   const bulletRadius = clientData.pawn.bulletConfig.bulletRadius;
 
