@@ -58,13 +58,17 @@ function setupWebSocket(server) {
 
     ws.on("message", (message) => {
       const msg = JSON.parse(message);
+      const { inputNumber, input } = msg.data;
 
       clientData.moving = {
-        movingRight: msg.data.includes("arrowright") || msg.data.includes("d"),
-        movingLeft: msg.data.includes("arrowleft") || msg.data.includes("a"),
-        movingUp: msg.data.includes("arrowup") || msg.data.includes("w"),
-        movingDown: msg.data.includes("arrowdown") || msg.data.includes("s"),
+        movingRight: input.includes("arrowright") || input.includes("d"),
+        movingLeft: input.includes("arrowleft") || input.includes("a"),
+        movingUp: input.includes("arrowup") || input.includes("w"),
+        movingDown: input.includes("arrowdown") || input.includes("s"),
       };
+
+      // Update the last processed sequence number
+      clientData.lastProcessedServerInput = inputNumber;
     });
 
     ws.on("close", () => {
@@ -89,6 +93,8 @@ function createClientData(ws, clientId) {
       movingUp: false,
       movingDown: false,
     },
+    lastProcessedServerInput: 0,
+    unprocessedInputs: [],
   };
 }
 
@@ -140,6 +146,7 @@ function setBroadcastGameStateInterval(wss) {
         x: client.pawn.position.x,
         y: client.pawn.position.y,
       },
+      lastProcessedServerInput: client.lastProcessedServerInput,
     }));
 
     wss.clients.forEach((client) => {
@@ -149,6 +156,7 @@ function setBroadcastGameStateInterval(wss) {
           clientPawn: {
             position: client.clientData?.pawn?.position,
           },
+          lastProcessedServerInput: client.clientData.lastProcessedServerInput,
         };
         const message = JSON.stringify({ type: "gameState", data });
         client.send(message);
