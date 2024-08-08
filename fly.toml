@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for tagginggame-backend on 2024-08-04T15:37:11+07:00
+# fly.toml app configuration file generated for tagginggame-backend-simple on 2024-08-08T15:39:14+07:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'tagginggame-backend'
+app = 'tagginggame-backend-simple'
 primary_region = 'sin'
 
 [build]
@@ -20,7 +20,3 @@ primary_region = 'sin'
   memory = '1gb'
   cpu_kind = 'shared'
   cpus = 1
-
-[env]
-  NODE_ENV = "production"
-  PORT = "3000"
