@@ -1,13 +1,11 @@
 require("dotenv").config();
+const url = require("url");
+
 const cors = require("cors");
 const express = require("express");
 const http = require("http");
 const WebSocket = require("ws");
 const {
-  CANVAS_WIDTH,
-  CANVAS_HEIGHT,
-  RADIUS,
-  MOVEMENT_SPEED,
   GAME_SPEED_RATE,
   BROADCAST_RATE_INTERVAL,
 } = require("./config/gameConstants");
@@ -25,12 +23,8 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.options("*", cors(corsOptions));
 
-const webSocket = setupWebSocket(server);
-
-console.log(webSocket);
-
-setUpdateGameStateInterval();
-setBroadcastGameStateInterval(webSocket);
+// setUpdateGameStateInterval();
+// setBroadcastGameStateInterval(webSocket);
 
 const PORT = process.env.PORT || 3000;
 
@@ -39,92 +33,159 @@ server.listen(PORT, "0.0.0.0", () => {
 });
 
 // Game logic
-const clients = new Map();
 let nextClientId = 0;
+const clients = [];
+const entities = [];
+let last_processed_input = {};
+let update_interval = null;
+
+const messages = [];
+
+const webSocket = setupWebSocket(server);
 
 function setupWebSocket(server) {
   const wss = new WebSocket.Server({ server });
   console.log("Start Websocket server");
 
+  setServerUpdate(wss);
+
   wss.on("connection", (ws) => {
     const clientId = nextClientId++;
-    const clientData = createClientData(ws, clientId);
-    ws.clientData = clientData;
-
+    ws.clientId = clientId;
     console.log(`Client ${clientId} connected`);
+    const client = new Client(ws, clientId);
+    // clients.set(clientId, ws);
+    clients.push(client);
 
-    // Add new connection to clients map
-    clients.set(clientId, clientData);
+    const entity = new Entity(clientId);
+    entities.push(entity);
+
+    console.log(clients);
+    console.log(entities);
 
     ws.on("message", (message) => {
-      const msg = JSON.parse(message);
-      const { inputNumber, input } = msg.data;
-
-      clientData.moving = {
-        movingRight: input.includes("arrowright") || input.includes("d"),
-        movingLeft: input.includes("arrowleft") || input.includes("a"),
-        movingUp: input.includes("arrowup") || input.includes("w"),
-        movingDown: input.includes("arrowdown") || input.includes("s"),
-      };
-
-      // Update the last processed sequence number
-      clientData.lastProcessedServerInput = inputNumber;
+      try {
+        const data = JSON.parse(message);
+        switch (data.type) {
+          case "input":
+            console.log(data);
+            messages.push({ recv_ts: Date.now(), payload: data.data });
+            break;
+        }
+      } catch (err) {
+        console.error(err);
+      }
     });
 
     ws.on("close", () => {
-      console.log(`Client ${clientId} disconnected`);
-      clients.delete(clientId);
+      // Remove the client from the clients array
+      const clientIndex = clients.findIndex(
+        (client) => client.clientId === clientId
+      );
+      if (clientIndex !== -1) {
+        clients.splice(clientIndex, 1);
+      }
+
+      // Remove the entity associated with the client from the entities array
+      const entityIndex = entities.findIndex(
+        (entity) => entity.clientId === clientId
+      );
+      if (entityIndex !== -1) {
+        entities.splice(entityIndex, 1);
+      }
     });
   });
 
   return wss;
 }
 
-function createClientData(ws, clientId) {
-  const x = Math.random() * (CANVAS_WIDTH - RADIUS);
-  const y = Math.random() * (CANVAS_HEIGHT - RADIUS);
-  return {
-    ws,
-    clientId,
-    pawn: createPawn(x, y, RADIUS, clientId),
-    moving: {
-      movingRight: false,
-      movingLeft: false,
-      movingUp: false,
-      movingDown: false,
-    },
-    lastProcessedServerInput: 0,
-    unprocessedInputs: [],
-  };
+// Broadcast the updated position to all clients
+function setServerUpdate(wss) {
+  try {
+    console.log(wss);
+    // Game loop to update and broadcast game state
+    if (update_interval) {
+      clearInterval(update_interval);
+    }
+    update_interval = setInterval(() => {
+      // Listen to clients.
+      processClientMessages();
+      sendWorldState(wss);
+    }, 50); // 60 FPS
+  } catch (err) {
+    console.error(err);
+  }
 }
 
-function createPawn(x, y, radius, clientId) {
-  return {
-    position: { x, y },
-    clientId: clientId,
-    speed: MOVEMENT_SPEED,
-    radius,
-    move(clientData) {
-      let xChange = 0;
-      let yChange = 0;
-
-      if (clientData.moving.movingRight) xChange = this.speed;
-      if (clientData.moving.movingLeft) xChange = -this.speed;
-      if (clientData.moving.movingUp) yChange = -this.speed;
-      if (clientData.moving.movingDown) yChange = this.speed;
-
-      if (xChange !== 0 || yChange !== 0) {
-        const diagonalFactor = 0.7071;
-        if (xChange !== 0 && yChange !== 0) {
-          xChange *= diagonalFactor;
-          yChange *= diagonalFactor;
-        }
-
-        this.position.x += xChange;
-        this.position.y += yChange;
+// function processClientMessages() {
+//   let message = getMessage();
+//   if (message) {
+//     // Update the state of the entity, based on its input.
+//     // We just ignore inputs that don't look valid; this is what prevents clients from cheating.
+//     if (validateInput(message)) {
+//       const id = message.entity_id;
+//       entities.forEach((entity) => {
+//         if (entity.clientId === message.entity_id) {
+//           entity.applyInput(message);
+//           last_processed_input[id] = message.input_sequence_number;
+//         }
+//       });
+//     }
+//   }
+// }
+function processClientMessages() {
+  while (messages.length > 0) {
+    console.log(JSON.stringify(messages));
+    let message = getMessage();
+    if (message && validateInput(message)) {
+      // console.log(message);
+      const id = message.entity_id;
+      const entity = entities.find((entity) => entity.clientId === id);
+      if (entity) {
+        entity.applyInput(message);
+        last_processed_input[id] = message.input_sequence_number;
+        // console.log(last_processed_input);
       }
-    },
-  };
+    }
+  }
+}
+
+!!! CONTINUE FROM HERE, SEND CLIENTID TO FRONTEND SO FRONTEND CAN SEND IT BACK WITH MESSAGES !!!
+!!! ALSO CONSIDER SENDING CLIENTID UPON CONNECTION !!! 
+
+function sendWorldState(wss) {
+  // Send the world state to all the connected clients.
+  console.log(wss);
+  let world_state = entities.map((entity) => {
+    return {
+      entity_id: entity.clientId,
+      position: entity.x,
+      last_processed_input: last_processed_input[entity.clientId] || null,
+    };
+  });
+  // console.log(world_state);
+}
+
+// Check whether this input seems to be valid (e.g. "make sense" according
+// to the physical rules of the World)
+function validateInput(input) {
+  if (Math.abs(input.press_time) > 1 / 40) {
+    return false;
+  }
+  return true;
+}
+
+function getMessage() {
+  const now = Date.now();
+  for (let i = 0; i < messages.length; i++) {
+    // Access each message in the queue.
+    const message = messages[i];
+    // // Check if the message's designated reception time has passed or is equal to the current time.
+    if (message.recv_ts <= now) {
+      messages.splice(i, 1);
+      return message.payload;
+    }
+  }
 }
 
 // Update game state - update position of pawns
@@ -136,31 +197,22 @@ function setUpdateGameStateInterval() {
   }, GAME_SPEED_RATE);
 }
 
-// Broadcast the updated position to all clients
-function setBroadcastGameStateInterval(wss) {
-  setInterval(() => {
-    const allPawns = Array.from(clients.entries()).map(([id, client]) => ({
-      clientId: id,
-      radius: client.pawn.radius,
-      position: {
-        x: client.pawn.position.x,
-        y: client.pawn.position.y,
-      },
-      lastProcessedServerInput: client.lastProcessedServerInput,
-    }));
+class Entity {
+  constructor(clientId) {
+    this.clientId = clientId;
+    this.x = 3;
+    this.speed = 2;
+    this.position_buffer = [];
+  }
 
-    wss.clients.forEach((client) => {
-      if (client.readyState === WebSocket.OPEN) {
-        const data = {
-          allPawns,
-          clientPawn: {
-            position: client.clientData?.pawn?.position,
-          },
-          lastProcessedServerInput: client.clientData.lastProcessedServerInput,
-        };
-        const message = JSON.stringify({ type: "gameState", data });
-        client.send(message);
-      }
-    });
-  }, BROADCAST_RATE_INTERVAL);
+  applyInput(input) {
+    this.x += input.press_time * this.speed;
+  }
+}
+
+class Client {
+  constructor(ws, clientId) {
+    this.ws = ws;
+    this.clientId = clientId;
+  }
 }
