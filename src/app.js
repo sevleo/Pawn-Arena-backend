@@ -1,6 +1,4 @@
 require("dotenv").config();
-const url = require("url");
-
 const cors = require("cors");
 const express = require("express");
 const http = require("http");
@@ -54,11 +52,13 @@ function setupWebSocket(server) {
     ws.clientId = clientId;
     console.log(`Client ${clientId} connected`);
     const client = new Client(ws, clientId);
-    // clients.set(clientId, ws);
     clients.push(client);
 
     const entity = new Entity(clientId);
     entities.push(entity);
+
+    // Send the entity_id to the client
+    ws.send(JSON.stringify({ type: "connection", entity_id: clientId }));
 
     console.log(clients);
     console.log(entities);
@@ -68,8 +68,9 @@ function setupWebSocket(server) {
         const data = JSON.parse(message);
         switch (data.type) {
           case "input":
-            console.log(data);
+            data.data.entity_id = ws.clientId;
             messages.push({ recv_ts: Date.now(), payload: data.data });
+            console.log(data);
             break;
         }
       } catch (err) {
@@ -135,7 +136,7 @@ function setServerUpdate(wss) {
 // }
 function processClientMessages() {
   while (messages.length > 0) {
-    console.log(JSON.stringify(messages));
+    // console.log(JSON.stringify(messages));
     let message = getMessage();
     if (message && validateInput(message)) {
       // console.log(message);
@@ -150,12 +151,9 @@ function processClientMessages() {
   }
 }
 
-!!! CONTINUE FROM HERE, SEND CLIENTID TO FRONTEND SO FRONTEND CAN SEND IT BACK WITH MESSAGES !!!
-!!! ALSO CONSIDER SENDING CLIENTID UPON CONNECTION !!! 
-
 function sendWorldState(wss) {
   // Send the world state to all the connected clients.
-  console.log(wss);
+  // console.log(wss);
   let world_state = entities.map((entity) => {
     return {
       entity_id: entity.clientId,
@@ -163,7 +161,15 @@ function sendWorldState(wss) {
       last_processed_input: last_processed_input[entity.clientId] || null,
     };
   });
-  // console.log(world_state);
+
+  const worldStateMessage = JSON.stringify({
+    type: "world_state",
+    data: world_state,
+  });
+
+  wss.clients.forEach((client) => {
+    client.send(worldStateMessage);
+  });
 }
 
 // Check whether this input seems to be valid (e.g. "make sense" according
