@@ -21,9 +21,6 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.options("*", cors(corsOptions));
 
-// setUpdateGameStateInterval();
-// setBroadcastGameStateInterval(webSocket);
-
 const PORT = process.env.PORT || 3000;
 
 server.listen(PORT, "0.0.0.0", () => {
@@ -112,7 +109,7 @@ function setServerUpdate(wss) {
       // Listen to clients.
       processClientMessages();
       sendWorldState(wss);
-    }, 400); // 60 FPS
+    }, BROADCAST_RATE_INTERVAL);
   } catch (err) {
     console.error(err);
   }
@@ -176,15 +173,6 @@ function getMessage() {
       return message.payload;
     }
   }
-}
-
-// Update game state - update position of pawns
-function setUpdateGameStateInterval() {
-  setInterval(() => {
-    clients.forEach((clientData) => {
-      clientData.pawn.move(clientData);
-    });
-  }, GAME_SPEED_RATE);
 }
 
 class Entity {
