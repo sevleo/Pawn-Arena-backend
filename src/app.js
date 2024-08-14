@@ -112,7 +112,7 @@ function setServerUpdate(wss) {
       // Listen to clients.
       processClientMessages();
       sendWorldState(wss);
-    }, 50); // 60 FPS
+    }, 200); // 60 FPS
   } catch (err) {
     console.error(err);
   }
