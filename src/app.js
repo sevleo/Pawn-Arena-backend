@@ -112,28 +112,12 @@ function setServerUpdate(wss) {
       // Listen to clients.
       processClientMessages();
       sendWorldState(wss);
-    }, 200); // 60 FPS
+    }, 400); // 60 FPS
   } catch (err) {
     console.error(err);
   }
 }
 
-// function processClientMessages() {
-//   let message = getMessage();
-//   if (message) {
-//     // Update the state of the entity, based on its input.
-//     // We just ignore inputs that don't look valid; this is what prevents clients from cheating.
-//     if (validateInput(message)) {
-//       const id = message.entity_id;
-//       entities.forEach((entity) => {
-//         if (entity.clientId === message.entity_id) {
-//           entity.applyInput(message);
-//           last_processed_input[id] = message.input_sequence_number;
-//         }
-//       });
-//     }
-//   }
-// }
 function processClientMessages() {
   while (messages.length > 0) {
     // console.log(JSON.stringify(messages));
@@ -175,9 +159,9 @@ function sendWorldState(wss) {
 // Check whether this input seems to be valid (e.g. "make sense" according
 // to the physical rules of the World)
 function validateInput(input) {
-  if (Math.abs(input.press_time) > 1 / 40) {
-    return false;
-  }
+  // if (Math.abs(input.press_time) > 1 / 40) {
+  //   return false;
+  // }
   return true;
 }
 
