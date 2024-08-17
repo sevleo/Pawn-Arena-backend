@@ -91,6 +91,8 @@ function setupWebSocket(server) {
       if (entityIndex !== -1) {
         entities.splice(entityIndex, 1);
       }
+
+      console.log(`Client ${clientId} disconnected`);
     });
   });
 
@@ -99,34 +101,26 @@ function setupWebSocket(server) {
 
 // Broadcast the updated position to all clients
 function setServerUpdate(wss) {
-  try {
-    console.log(wss);
-    // Game loop to update and broadcast game state
-    if (update_interval) {
-      clearInterval(update_interval);
-    }
-    update_interval = setInterval(() => {
-      // Listen to clients.
-      processClientMessages();
-      sendWorldState(wss);
-    }, BROADCAST_RATE_INTERVAL);
-  } catch (err) {
-    console.error(err);
-  }
+  // Game loop to update the game state
+  setInterval(() => {
+    processClientMessages();
+  }, GAME_SPEED_RATE);
+
+  // Separate interval to broadcast the game state
+  setInterval(() => {
+    sendWorldState(wss);
+  }, BROADCAST_RATE_INTERVAL);
 }
 
 function processClientMessages() {
   while (messages.length > 0) {
-    // console.log(JSON.stringify(messages));
     let message = getMessage();
     if (message && validateInput(message)) {
-      // console.log(message);
       const id = message.entity_id;
       const entity = entities.find((entity) => entity.clientId === id);
       if (entity) {
         entity.applyInput(message);
         last_processed_input[id] = message.input_sequence_number;
-        // console.log(last_processed_input);
       }
     }
   }
@@ -134,7 +128,6 @@ function processClientMessages() {
 
 function sendWorldState(wss) {
   // Send the world state to all the connected clients.
-  // console.log(wss);
   let world_state = entities.map((entity) => {
     return {
       entity_id: entity.clientId,
@@ -156,9 +149,9 @@ function sendWorldState(wss) {
 // Check whether this input seems to be valid (e.g. "make sense" according
 // to the physical rules of the World)
 function validateInput(input) {
-  // if (Math.abs(input.press_time) > 1 / 40) {
-  //   return false;
-  // }
+  if (Math.abs(input.press_time) > 1 / 40) {
+    return false;
+  }
   return true;
 }
 
