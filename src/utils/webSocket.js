@@ -23,9 +23,9 @@ class Entity {
 }
 
 class Client {
-  constructor(ws, clientId) {
+  constructor(ws) {
     this.ws = ws;
-    this.clientId = clientId;
+    this.clientId = ws.clientId;
   }
 }
 
@@ -40,17 +40,16 @@ function setupWebSocket(server) {
   setBroadcastWorldStateInterval(wss);
 
   wss.on("connection", (ws) => {
-    const clientId = getNewClientId();
-    ws.clientId = clientId;
-    console.log(`Client ${clientId} connected`);
-    const client = new Client(ws, clientId);
+    ws.clientId = getNewClientId();
+    console.log(`Client ${ws.clientId} connected`);
+    const client = new Client(ws);
     gameState.clients.push(client);
 
-    const entity = new Entity(clientId);
+    const entity = new Entity(ws.clientId);
     gameState.entities.push(entity);
 
     // Send the entity_id to the client
-    ws.send(JSON.stringify({ type: "connection", entity_id: clientId }));
+    ws.send(JSON.stringify({ type: "connection", entity_id: ws.clientId }));
 
     console.log(gameState.clients);
     console.log(gameState.entities);
@@ -62,7 +61,7 @@ function setupWebSocket(server) {
     ws.on("close", () => {
       // Remove the client from the clients array
       const clientIndex = gameState.clients.findIndex(
-        (client) => client.clientId === clientId
+        (client) => client.clientId === ws.clientId
       );
       if (clientIndex !== -1) {
         gameState.clients.splice(clientIndex, 1);
@@ -70,13 +69,13 @@ function setupWebSocket(server) {
 
       // Remove the entity associated with the client from the entities array
       const entityIndex = gameState.entities.findIndex(
-        (entity) => entity.clientId === clientId
+        (entity) => entity.clientId === ws.clientId
       );
       if (entityIndex !== -1) {
         gameState.entities.splice(entityIndex, 1);
       }
 
-      console.log(`Client ${clientId} disconnected`);
+      console.log(`Client ${ws.clientId} disconnected`);
     });
   });
 
