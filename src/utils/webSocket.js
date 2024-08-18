@@ -8,26 +8,8 @@ const {
   setProcessClientMessagesInterval,
 } = require("../services/clientMessages");
 const handleClientMessage = require("../controllers/clientMessageController");
-
-class Entity {
-  constructor(clientId) {
-    this.clientId = clientId;
-    this.x = 3;
-    this.speed = 2;
-    this.position_buffer = [];
-  }
-
-  applyInput(input) {
-    this.x += input.press_time * this.speed;
-  }
-}
-
-class Client {
-  constructor(ws) {
-    this.ws = ws;
-    this.clientId = ws.clientId;
-  }
-}
+const Entity = require("../models/entity");
+const Client = require("../models/client");
 
 function setupWebSocket(server) {
   const wss = new WebSocket.Server({ server });
