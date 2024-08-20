@@ -25,15 +25,11 @@ function processClientMessages() {
 }
 
 function getMessage() {
-  const now = Date.now();
   for (let i = 0; i < messages.length; i++) {
     // Access each message in the queue.
     const message = messages[i];
-    // // Check if the message's designated reception time has passed or is equal to the current time.
-    if (message.recv_ts <= now) {
-      messages.splice(i, 1);
-      return message.payload;
-    }
+    messages.splice(i, 1);
+    return message.payload;
   }
 }
 

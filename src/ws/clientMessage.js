@@ -6,7 +6,6 @@ function handleClientMessage(message, ws) {
   switch (data.type) {
     case "input":
       const message = {
-        recv_ts: Date.now(),
         payload: data.data,
       };
       clientMessages.messages.push(message);
