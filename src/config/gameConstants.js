@@ -3,7 +3,7 @@ const CANVAS_WIDTH = 800;
 const CANVAS_HEIGHT = 800;
 
 // Game
-const GAME_SPEED_RATE = 16.67;
+const GAME_SPEED_RATE = 100;
 
 // Websocket connection
 const BROADCAST_RATE_INTERVAL = 10;
