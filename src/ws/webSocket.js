@@ -11,8 +11,8 @@ const { handleClientDisconnection } = require("./clientDisconnect");
 function setupWebSocket(server) {
   const wss = new WebSocket.Server({ server });
   console.log("Start Websocket server");
-  setProcessClientMessagesInterval(); // Loop to update the game state
-  setBroadcastWorldStateInterval(wss); // Loop to broadcast the game state
+  setProcessClientMessagesInterval(wss); // Loop to update the game state
+  // setBroadcastWorldStateInterval(wss); // Loop to broadcast the game state
 
   wss.on("connection", (ws) => {
     ws.clientId = getNewClientId();

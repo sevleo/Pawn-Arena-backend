@@ -1,12 +1,14 @@
 const { updateGameState } = require("./gameState");
 const { GAME_SPEED_RATE } = require("../config/gameConstants");
+const { broadcastWorldState } = require("../ws/broadcastData");
 
 let messages = [];
 
 // Loop to update the game state
-function setProcessClientMessagesInterval() {
+function setProcessClientMessagesInterval(wss) {
   return setInterval(() => {
     processClientMessages();
+    broadcastWorldState(wss);
   }, GAME_SPEED_RATE);
 }
 

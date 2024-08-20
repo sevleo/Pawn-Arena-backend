@@ -8,8 +8,6 @@ function setBroadcastWorldStateInterval(wss) {
   }, BROADCAST_RATE_INTERVAL);
 }
 
-module.exports = { setBroadcastWorldStateInterval };
-
 function broadcastWorldState(wss) {
   // Send the world state to all the connected clients.
   let world_state = entities.map((entity) => {
@@ -29,3 +27,5 @@ function broadcastWorldState(wss) {
     client.send(worldStateMessage);
   });
 }
+
+module.exports = { setBroadcastWorldStateInterval, broadcastWorldState };
