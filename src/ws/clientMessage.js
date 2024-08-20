@@ -1,16 +1,20 @@
-const clientMessages = require("../services/clientMessages");
+const clientMessages = require("../services/processClientMessages");
 
 function handleClientMessage(message, ws) {
-  const data = JSON.parse(message);
-  data.data.entity_id = ws.clientId;
-  switch (data.type) {
+  const msg = JSON.parse(message);
+  msg.data.entity_id = ws.clientId;
+  switch (msg.type) {
     case "input":
-      const message = {
-        payload: data.data,
-      };
-      clientMessages.messages.push(message);
+      saveClientMessage(msg);
       break;
   }
 }
 
 module.exports = handleClientMessage;
+
+function saveClientMessage(msg) {
+  const message = {
+    payload: msg.data,
+  };
+  clientMessages.messages.push(message);
+}

@@ -17,7 +17,7 @@ module.exports = {
 
 function processClientMessages() {
   while (messages.length > 0) {
-    let message = getMessage();
+    const message = getMessage();
     if (message && validateInput(message)) {
       updateGameState(message);
     }

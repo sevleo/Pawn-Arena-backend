@@ -1,11 +1,9 @@
 const WebSocket = require("ws");
-const {
-  setBroadcastWorldStateInterval,
-  getNewClientId,
-} = require("../services/gameState");
+const { getNewClientId } = require("../services/gameState");
+const { setBroadcastWorldStateInterval } = require("../ws/broadcastData");
 const {
   setProcessClientMessagesInterval,
-} = require("../services/clientMessages");
+} = require("../services/processClientMessages");
 const handleClientMessage = require("./clientMessage");
 const { createClientAndEntity } = require("./clientConnect");
 const { handleClientDisconnection } = require("./clientDisconnect");
