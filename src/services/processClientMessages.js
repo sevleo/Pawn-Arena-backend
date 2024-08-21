@@ -36,8 +36,8 @@ function getMessage() {
 // Check whether this input seems to be valid (e.g. "make sense" according
 // to the physical rules of the World)
 function validateInput(input) {
-  if (Math.abs(input.press_time) > 1 / 40) {
-    return false;
-  }
+  // if (Math.abs(input.press_time) > 1 / 40) {
+  //   return false;
+  // }
   return true;
 }
