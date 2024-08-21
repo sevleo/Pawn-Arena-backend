@@ -21,6 +21,7 @@ function broadcastWorldState(wss) {
   const worldStateMessage = JSON.stringify({
     type: "world_state",
     data: world_state,
+    ts: Date.now(),
   });
 
   wss.clients.forEach((client) => {
