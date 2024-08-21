@@ -28,4 +28,4 @@ function broadcastWorldState(wss) {
   });
 }
 
-module.exports = { setBroadcastWorldStateInterval, broadcastWorldState };
+module.exports = { setBroadcastWorldStateInterval };
