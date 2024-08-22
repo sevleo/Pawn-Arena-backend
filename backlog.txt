@@ -17,8 +17,6 @@
 
 
 
-d
-
 The gameplay
 - endless game, big map, up to 200 players on the map
 - each player starts with an initial weapon and health
