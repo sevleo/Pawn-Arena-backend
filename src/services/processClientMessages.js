@@ -1,12 +1,20 @@
+const { Engine, Composite, Detector } = require("matter-js");
 const { updateGameState } = require("./gameState");
 const { GAME_SPEED_RATE } = require("../config/gameConstants");
 
 let messages = [];
+let lastTime;
 
 // Loop to update the game state
-function setProcessClientMessagesInterval() {
+function setProcessClientMessagesInterval(engine) {
   return setInterval(() => {
     processClientMessages();
+
+    const now = Date.now();
+    const delta = now - lastTime;
+    lastTime = now;
+
+    Engine.update(engine, delta);
   }, GAME_SPEED_RATE);
 }
 

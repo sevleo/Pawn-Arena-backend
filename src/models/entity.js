@@ -1,15 +1,25 @@
 const { MOVEMENT_SPEED } = require("../config/gameConstants");
+const { Bodies, Composite, Body } = require("matter-js");
 
 class Entity {
-  constructor(clientId) {
+  constructor(clientId, world) {
     this.clientId = clientId;
     this.position = {
       x: 0,
       y: 0,
     };
+    this.speed = 0.02;
 
-    this.speed = MOVEMENT_SPEED;
-    this.position_buffer = [];
+    this.entityBody = Bodies.circle(0, 0, 10, {
+      label: "entity",
+      clientId: clientId,
+      isStatic: false,
+      restitution: 0.2,
+      friction: 0.5,
+      frictionAir: 0.1,
+    });
+
+    Composite.add(world, this.entityBody);
   }
 
   applyInput(input) {
@@ -30,8 +40,14 @@ class Entity {
       }
 
       // Update the position of the entity
-      this.position.x += xForce;
-      this.position.y += yForce;
+      // this.position.x += xForce;
+      // this.position.y += yForce;
+
+      // Apply force to the body
+      Body.applyForce(this.entityBody, this.entityBody.position, {
+        x: xForce,
+        y: yForce,
+      });
     }
   }
 }
