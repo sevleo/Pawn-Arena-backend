@@ -9,6 +9,7 @@ class Entity {
   }
 
   applyInput(input) {
+    console.log(input);
     this.x += input.press_time * this.speed;
   }
 }
