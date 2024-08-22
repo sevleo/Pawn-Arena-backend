@@ -14,6 +14,8 @@ function updateGameState(message) {
     entity.applyInput(message);
     last_processed_input[id] = message.input_sequence_number;
   }
+  // console.log(entity.position);
+  console.log(entity.entityBody.position);
 }
 
 module.exports = {

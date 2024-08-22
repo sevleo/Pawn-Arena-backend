@@ -8,16 +8,16 @@ const handleClientMessage = require("./clientMessage");
 const { createClientAndEntity } = require("./clientConnect");
 const { handleClientDisconnection } = require("./clientDisconnect");
 
-function setupWebSocket(server) {
+function setupWebSocket(server, world, engine) {
   const wss = new WebSocket.Server({ server });
   console.log("Start Websocket server");
-  setProcessClientMessagesInterval(); // Loop to update the game state
+  setProcessClientMessagesInterval(engine); // Loop to update the game state
   setBroadcastWorldStateInterval(wss); // Loop to broadcast the game state
 
   wss.on("connection", (ws) => {
     ws.clientId = getNewClientId();
     console.log(`Client ${ws.clientId} connected`);
-    createClientAndEntity(ws);
+    createClientAndEntity(ws, world);
 
     // Send the entity_id to the client
     ws.send(JSON.stringify({ type: "connection", entity_id: ws.clientId }));

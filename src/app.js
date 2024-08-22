@@ -3,6 +3,8 @@ const cors = require("cors");
 const express = require("express");
 const http = require("http");
 const setupWebSocket = require("./ws/webSocket");
+const { Engine } = require("matter-js");
+const { createWorld } = require("./services/createWorld");
 
 // Run App server
 const app = express();
@@ -23,5 +25,9 @@ server.listen(PORT, "0.0.0.0", () => {
   console.log(`Listening at port ${PORT}...`);
 });
 
+const engine = Engine.create();
+const world = engine.world;
+createWorld(engine, world);
+
 // Run Websocket server
-const webSocket = setupWebSocket(server);
+const webSocket = setupWebSocket(server, world, engine);

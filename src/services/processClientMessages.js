@@ -1,12 +1,20 @@
+const { Engine, Composite, Detector } = require("matter-js");
 const { updateGameState } = require("./gameState");
 const { GAME_SPEED_RATE } = require("../config/gameConstants");
 
 let messages = [];
+let lastTime;
 
 // Loop to update the game state
-function setProcessClientMessagesInterval() {
+function setProcessClientMessagesInterval(engine) {
   return setInterval(() => {
     processClientMessages();
+
+    const now = Date.now();
+    const delta = now - lastTime;
+    lastTime = now;
+
+    Engine.update(engine, delta);
   }, GAME_SPEED_RATE);
 }
 
@@ -36,8 +44,8 @@ function getMessage() {
 // Check whether this input seems to be valid (e.g. "make sense" according
 // to the physical rules of the World)
 function validateInput(input) {
-  // if (Math.abs(input.press_time) > 1 / 40) {
-  //   return false;
-  // }
+  if (Math.abs(input.press_time) > 1 / 40) {
+    return false;
+  }
   return true;
 }
