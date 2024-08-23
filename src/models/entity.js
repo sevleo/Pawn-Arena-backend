@@ -23,46 +23,46 @@ class Entity {
   }
 
   applyInput(input) {
-    // let xVelocity = 0;
-    // let yVelocity = 0;
+    let xVelocity = 0;
+    let yVelocity = 0;
 
-    // if (input.active_keys.right) xVelocity = this.speed * input.press_time;
-    // if (input.active_keys.left) xVelocity = -this.speed * input.press_time;
-    // if (input.active_keys.up) yVelocity = -this.speed * input.press_time;
-    // if (input.active_keys.down) yVelocity = this.speed * input.press_time;
+    if (input.active_keys.right) xVelocity = this.speed * input.press_time;
+    if (input.active_keys.left) xVelocity = -this.speed * input.press_time;
+    if (input.active_keys.up) yVelocity = -this.speed * input.press_time;
+    if (input.active_keys.down) yVelocity = this.speed * input.press_time;
 
-    // if (xVelocity !== 0 || yVelocity !== 0) {
-    //   const diagonalFactor = 0.7071; // Approximation of 1/√2 for 45-degree movement
-
-    //   if (xVelocity !== 0 && yVelocity !== 0) {
-    //     xVelocity *= diagonalFactor;
-    //     yVelocity *= diagonalFactor;
-    //   }
-
-    //   // Apply the velocity directly to the body
-    //   Body.setVelocity(this.entityBody, {
-    //     x: xVelocity,
-    //     y: yVelocity,
-    //   });
-    let xForce = 0;
-    let yForce = 0;
-
-    if (input.active_keys.right) xForce = this.speed * input.press_time;
-    if (input.active_keys.left) xForce = -this.speed * input.press_time;
-    if (input.active_keys.up) yForce = -this.speed * input.press_time;
-    if (input.active_keys.down) yForce = this.speed * input.press_time;
-
-    if (xForce !== 0 || yForce !== 0) {
+    if (xVelocity !== 0 || yVelocity !== 0) {
       const diagonalFactor = 0.7071; // Approximation of 1/√2 for 45-degree movement
 
-      if (xForce !== 0 && yForce !== 0) {
-        xForce *= diagonalFactor;
-        yForce *= diagonalFactor;
+      if (xVelocity !== 0 && yVelocity !== 0) {
+        xVelocity *= diagonalFactor;
+        yVelocity *= diagonalFactor;
       }
 
-      // Update the position of the entity
-      this.position.x += xForce;
-      this.position.y += yForce;
+      // Apply the velocity directly to the body
+      Body.setVelocity(this.entityBody, {
+        x: xVelocity,
+        y: yVelocity,
+      });
+      // let xForce = 0;
+      // let yForce = 0;
+
+      // if (input.active_keys.right) xForce = this.speed * input.press_time;
+      // if (input.active_keys.left) xForce = -this.speed * input.press_time;
+      // if (input.active_keys.up) yForce = -this.speed * input.press_time;
+      // if (input.active_keys.down) yForce = this.speed * input.press_time;
+
+      // if (xForce !== 0 || yForce !== 0) {
+      //   const diagonalFactor = 0.7071; // Approximation of 1/√2 for 45-degree movement
+
+      //   if (xForce !== 0 && yForce !== 0) {
+      //     xForce *= diagonalFactor;
+      //     yForce *= diagonalFactor;
+      //   }
+
+      //   // Update the position of the entity
+      //   this.position.x += xForce;
+      //   this.position.y += yForce;
 
       // Apply force to the body
       // Body.applyForce(this.entityBody, this.entityBody.position, {

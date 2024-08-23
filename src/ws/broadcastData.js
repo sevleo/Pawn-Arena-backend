@@ -13,12 +13,11 @@ function broadcastWorldState(wss) {
   let world_state = entities.map((entity) => {
     return {
       entity_id: entity.clientId,
-      // position: { x: entity.position.x, y: entity.position.y },
       position: {
-        // x: entity.entityBody.position.x,
-        // y: entity.entityBody.position.y,
-        x: entity.position.x,
-        y: entity.position.y,
+        x: entity.entityBody.position.x,
+        y: entity.entityBody.position.y,
+        // x: entity.position.x,
+        // y: entity.position.y,
       },
       last_processed_input: last_processed_input[entity.clientId] || null,
     };
