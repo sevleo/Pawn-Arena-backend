@@ -14,9 +14,9 @@ class Entity {
       label: "entity",
       clientId: clientId,
       isStatic: false,
-      restitution: 0.2,
+      restitution: 0,
       friction: 0.5,
-      frictionAir: 0.1,
+      frictionAir: 0.5,
     });
 
     Composite.add(world, this.entityBody);
