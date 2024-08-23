@@ -8,7 +8,7 @@ class Entity {
       x: 0,
       y: 0,
     };
-    this.speed = 0.02;
+    this.speed = MOVEMENT_SPEED;
 
     this.entityBody = Bodies.circle(0, 0, 10, {
       label: "entity",
@@ -40,14 +40,18 @@ class Entity {
       }
 
       // Update the position of the entity
-      // this.position.x += xForce;
-      // this.position.y += yForce;
+      this.position.x += xForce;
+      this.position.y += yForce;
 
       // Apply force to the body
-      Body.applyForce(this.entityBody, this.entityBody.position, {
-        x: xForce,
-        y: yForce,
-      });
+      // Body.applyForce(this.entityBody, this.entityBody.position, {
+      //   x: xForce,
+      //   y: yForce,
+      // });
+      // Body.setPosition(this.entityBody, {
+      //   x: this.position.x,
+      //   y: this.position.y,
+      // });
     }
   }
 }
