@@ -14,10 +14,10 @@ function broadcastWorldState(wss) {
     return {
       entity_id: entity.clientId,
       position: {
-        x: entity.entityBody.position.x,
-        y: entity.entityBody.position.y,
-        // x: entity.position.x,
-        // y: entity.position.y,
+        // x: entity.entityBody.position.x,
+        // y: entity.entityBody.position.y,
+        x: entity.position.x,
+        y: entity.position.y,
       },
       last_processed_input: last_processed_input[entity.clientId] || null,
     };
