@@ -26,10 +26,10 @@ class Entity {
     let xVelocity = 0;
     let yVelocity = 0;
 
-    if (input.active_keys.right) xVelocity = this.speed;
-    if (input.active_keys.left) xVelocity = -this.speed;
-    if (input.active_keys.up) yVelocity = -this.speed;
-    if (input.active_keys.down) yVelocity = this.speed;
+    if (input.active_keys.right) xVelocity = this.speed * input.press_time;
+    if (input.active_keys.left) xVelocity = -this.speed * input.press_time;
+    if (input.active_keys.up) yVelocity = -this.speed * input.press_time;
+    if (input.active_keys.down) yVelocity = this.speed * input.press_time;
 
     if (xVelocity !== 0 || yVelocity !== 0) {
       const diagonalFactor = 0.7071; // Approximation of 1/√2 for 45-degree movement
