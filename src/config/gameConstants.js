@@ -10,7 +10,7 @@ const BROADCAST_RATE_INTERVAL = 16.67;
 
 // Pawn
 const RADIUS = 10;
-const MOVEMENT_SPEED = 300;
+const MOVEMENT_SPEED = 3;
 
 module.exports = {
   RADIUS,
