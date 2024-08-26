@@ -16,6 +16,7 @@ function updateGameState(message) {
   }
   // console.log(entity.position);
   console.log(entity.entityBody.position);
+  console.log(entity.position);
 }
 
 module.exports = {

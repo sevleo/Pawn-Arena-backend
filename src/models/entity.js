@@ -23,23 +23,6 @@ class Entity {
   }
 
   applyInput(input) {
-    // let xVelocity = 0;
-    // let yVelocity = 0;
-    // if (input.active_keys.right) xVelocity = this.speed * input.press_time;
-    // if (input.active_keys.left) xVelocity = -this.speed * input.press_time;
-    // if (input.active_keys.up) yVelocity = -this.speed * input.press_time;
-    // if (input.active_keys.down) yVelocity = this.speed * input.press_time;
-    // if (xVelocity !== 0 || yVelocity !== 0) {
-    //   const diagonalFactor = 0.7071; // Approximation of 1/√2 for 45-degree movement
-    //   if (xVelocity !== 0 && yVelocity !== 0) {
-    //     xVelocity *= diagonalFactor;
-    //     yVelocity *= diagonalFactor;
-    //   }
-    //   // Apply the velocity directly to the body
-    //   Body.setVelocity(this.entityBody, {
-    //     x: xVelocity,
-    //     y: yVelocity,
-    //   });
     let xForce = 0;
     let yForce = 0;
     if (input.active_keys.right) xForce = this.speed * input.press_time;
@@ -60,10 +43,10 @@ class Entity {
       //   x: xForce,
       //   y: yForce,
       // });
-      // Body.setPosition(this.entityBody, {
-      //   x: this.position.x,
-      //   y: this.position.y,
-      // });
+      Body.setPosition(this.entityBody, {
+        x: this.position.x,
+        y: this.position.y,
+      });
       // }
     }
   }
