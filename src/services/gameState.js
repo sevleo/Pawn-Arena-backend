@@ -7,7 +7,7 @@ function getNewClientId() {
   return nextClientId++;
 }
 
-function updateGameState(message) {
+function updateGameState(message, engine) {
   const id = message.entity_id;
   const entity = entities.find((entity) => entity.clientId === id);
   if (entity) {
@@ -17,6 +17,11 @@ function updateGameState(message) {
   // console.log(entity.position);
   console.log(entity.entityBody.position);
   console.log(entity.position);
+  console.log(engine.detector.collisions);
+  if (engine.detector.collisions.length > 0) {
+    console.log(engine.detector.collisions[0].bodyA);
+    console.log(engine.detector.collisions[0].bodyB);
+  }
 }
 
 module.exports = {
