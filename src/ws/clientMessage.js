@@ -16,6 +16,7 @@ function saveClientMessage(msg) {
   const message = {
     payload: msg.data,
   };
+  console.log(message);
   clientMessages.messages.push(message);
   // console.log(message);
 }

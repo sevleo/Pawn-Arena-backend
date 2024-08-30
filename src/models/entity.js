@@ -8,6 +8,10 @@ class Entity {
       x: 0,
       y: 0,
     };
+    this.faceDirection = {
+      x: 0,
+      y: 0,
+    };
     this.speed = MOVEMENT_SPEED;
 
     this.entityBody = Bodies.circle(0, 0, 10, {
@@ -47,6 +51,9 @@ class Entity {
         x: this.position.x,
         y: this.position.y,
       });
+
+      this.faceDirection.x = input.faceDirection.x;
+      this.faceDirection.y = input.faceDirection.y;
       // }
     }
   }

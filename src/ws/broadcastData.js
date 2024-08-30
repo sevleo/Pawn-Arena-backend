@@ -19,6 +19,7 @@ function broadcastWorldState(wss) {
         x: entity.position.x,
         y: entity.position.y,
       },
+      faceDirection: entity.faceDirection,
       last_processed_input: last_processed_input[entity.clientId] || null,
     };
   });
