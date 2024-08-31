@@ -52,10 +52,10 @@ class Entity {
         y: this.position.y,
       });
 
-      this.faceDirection.x = input.faceDirection.x;
-      this.faceDirection.y = input.faceDirection.y;
       // }
     }
+    this.faceDirection.x = input.faceDirection.x;
+    this.faceDirection.y = input.faceDirection.y;
   }
 }
 

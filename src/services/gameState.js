@@ -14,10 +14,7 @@ function updateGameState(message, engine) {
     entity.applyInput(message);
     last_processed_input[id] = message.input_sequence_number;
   }
-  // console.log(entity.position);
-  // console.log(entity.entityBody.position);
-  // console.log(entity.position);
-  // console.log(engine.detector.collisions);
+
   if (engine.detector.collisions.length > 0) {
     // console.log(engine.detector.collisions[0].bodyA);
     // console.log(engine.detector.collisions[0].bodyB);
