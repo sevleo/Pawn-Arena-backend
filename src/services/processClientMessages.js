@@ -1,5 +1,5 @@
 const { Engine, Composite, Detector } = require("matter-js");
-const { updateGameState } = require("./gameState");
+const { updateGameState, bullets } = require("./gameState");
 const { GAME_SPEED_RATE } = require("../config/gameConstants");
 
 let messages = [];
@@ -10,12 +10,20 @@ function setProcessClientMessagesInterval(engine) {
   return setInterval(() => {
     processClientMessages(engine);
 
+    updateBullets();
+
     const now = Date.now();
     const delta = now - lastTime;
     lastTime = now;
 
     Engine.update(engine, delta);
   }, GAME_SPEED_RATE);
+}
+
+function updateBullets() {
+  bullets.forEach((bullet) => {
+    bullet.updatePosition();
+  });
 }
 
 module.exports = {

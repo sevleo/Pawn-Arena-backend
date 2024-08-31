@@ -1,5 +1,9 @@
 const { BROADCAST_RATE_INTERVAL } = require("../config/gameConstants");
-const { entities, last_processed_input } = require("../services/gameState");
+const {
+  entities,
+  bullets,
+  last_processed_input,
+} = require("../services/gameState");
 
 // Loop to broadcast the game state
 function setBroadcastWorldStateInterval(wss) {
@@ -10,7 +14,7 @@ function setBroadcastWorldStateInterval(wss) {
 
 function broadcastWorldState(wss) {
   // Send the world state to all the connected clients.
-  let world_state = entities.map((entity) => {
+  let world_entities = entities.map((entity) => {
     return {
       entity_id: entity.clientId,
       position: {
@@ -23,6 +27,23 @@ function broadcastWorldState(wss) {
       last_processed_input: last_processed_input[entity.clientId] || null,
     };
   });
+  let world_bullets = bullets.map((bullet) => {
+    return {
+      entity_id: bullet.entity_id,
+      position: {
+        x: bullet.position.x,
+        y: bullet.position.y,
+      },
+      direction: {
+        x: bullet.direction.x,
+        y: bullet.direction.y,
+      },
+    };
+  });
+  let world_state = {
+    entities: world_entities,
+    bullets: world_bullets,
+  };
 
   const worldStateMessage = JSON.stringify({
     type: "world_state",

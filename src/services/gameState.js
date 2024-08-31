@@ -2,6 +2,7 @@ let nextClientId = 0;
 let clients = [];
 let entities = [];
 let last_processed_input = {};
+let bullets = [];
 
 function getNewClientId() {
   return nextClientId++;
@@ -27,6 +28,7 @@ module.exports = {
   clients,
   entities,
   last_processed_input,
+  bullets,
   updateGameState,
   getNewClientId,
 };

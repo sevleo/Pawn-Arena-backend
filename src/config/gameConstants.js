@@ -6,11 +6,15 @@ const CANVAS_HEIGHT = 800;
 const GAME_SPEED_RATE = 16.67;
 
 // Websocket connection
-const BROADCAST_RATE_INTERVAL = 50;
+const BROADCAST_RATE_INTERVAL = 200;
 
 // Pawn
 const RADIUS = 10;
 const MOVEMENT_SPEED = 300;
+
+// Bullet
+const BULLET_SPEED = 3;
+const BULLET_COOLDOWN = 100;
 
 module.exports = {
   RADIUS,
@@ -19,4 +23,6 @@ module.exports = {
   GAME_SPEED_RATE,
   CANVAS_WIDTH,
   CANVAS_HEIGHT,
+  BULLET_SPEED,
+  BULLET_COOLDOWN,
 };
