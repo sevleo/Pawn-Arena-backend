@@ -59,6 +59,8 @@ class Entity {
       // }
     }
 
+    this.mousePosition = { x: input.mousePosition.x, y: input.mousePosition.y };
+
     // Update direction
     this.faceDirection.x = input.faceDirection.x;
     this.faceDirection.y = input.faceDirection.y;
@@ -75,7 +77,8 @@ class Entity {
           this.clientId,
           this.position,
           this.faceDirection,
-          bullets.length
+          bullets.length,
+          this.mousePosition
         );
 
         bullets.push(bullet);

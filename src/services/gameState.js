@@ -9,7 +9,7 @@ function getNewClientId() {
 }
 
 function updateGameState(message, engine) {
-  console.log(message);
+  // console.log(message);
   const id = message.entity_id;
   const entity = entities.find((entity) => entity.clientId === id);
   if (entity) {

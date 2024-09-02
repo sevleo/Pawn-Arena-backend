@@ -43,6 +43,7 @@ function broadcastWorldState(wss) {
         x: bullet.direction.x,
         y: bullet.direction.y,
       },
+      mousePosition: bullet.mousePosition,
     };
   });
   let world_state = {
