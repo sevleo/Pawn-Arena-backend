@@ -1,9 +1,14 @@
 const { BULLET_SPEED } = require("../config/gameConstants");
 
 class Bullet {
-  constructor(entity_id, position, direction) {
+  constructor(entity_id, position, direction, bullet_id) {
+    this.bullet_id = bullet_id;
     this.entity_id = entity_id;
-    this.position = {
+    this.initialPosition = {
+      x: position.x,
+      y: position.y,
+    };
+    this.serverPosition = {
       x: position.x,
       y: position.y,
     };
@@ -15,11 +20,11 @@ class Bullet {
   }
 
   updatePosition() {
-    this.position.x +=
+    this.serverPosition.x +=
       (this.direction.x /
         Math.sqrt(this.direction.x ** 2 + this.direction.y ** 2)) *
       this.speed;
-    this.position.y +=
+    this.serverPosition.y +=
       (this.direction.y /
         Math.sqrt(this.direction.x ** 2 + this.direction.y ** 2)) *
       this.speed;

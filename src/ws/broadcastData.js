@@ -29,10 +29,15 @@ function broadcastWorldState(wss) {
   });
   let world_bullets = bullets.map((bullet) => {
     return {
+      bullet_id: bullet.bullet_id,
       entity_id: bullet.entity_id,
-      position: {
-        x: bullet.position.x,
-        y: bullet.position.y,
+      initialPosition: {
+        x: bullet.initialPosition.x,
+        y: bullet.initialPosition.y,
+      },
+      serverPosition: {
+        x: bullet.serverPosition.x,
+        y: bullet.serverPosition.y,
       },
       direction: {
         x: bullet.direction.x,

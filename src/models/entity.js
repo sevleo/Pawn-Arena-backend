@@ -74,7 +74,8 @@ class Entity {
         const bullet = new Bullet(
           this.clientId,
           this.position,
-          this.faceDirection
+          this.faceDirection,
+          bullets.length
         );
 
         bullets.push(bullet);
