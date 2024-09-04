@@ -18,6 +18,7 @@ class Bullet {
     };
     this.speed = BULLET_SPEED;
     this.mousePosition = mousePosition;
+    this.newBullet = true;
   }
 
   updatePosition() {

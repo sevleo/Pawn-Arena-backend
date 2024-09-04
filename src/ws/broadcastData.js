@@ -28,6 +28,13 @@ function broadcastWorldState(wss) {
     };
   });
   let world_bullets = bullets.map((bullet) => {
+    // Store the current value of newBullet
+    const isNewBullet = bullet.newBullet;
+
+    // Update the bullet's newBullet property to false
+    bullet.newBullet = false;
+
+    // Return the bullet object with the original value of newBullet
     return {
       bullet_id: bullet.bullet_id,
       entity_id: bullet.entity_id,
@@ -44,8 +51,10 @@ function broadcastWorldState(wss) {
         y: bullet.direction.y,
       },
       mousePosition: bullet.mousePosition,
+      newBullet: isNewBullet, // Use the stored value
     };
   });
+
   let world_state = {
     entities: world_entities,
     bullets: world_bullets,

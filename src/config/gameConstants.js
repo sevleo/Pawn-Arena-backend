@@ -13,7 +13,7 @@ const RADIUS = 10;
 const MOVEMENT_SPEED = 300;
 
 // Bullet
-const BULLET_SPEED = 8;
+const BULLET_SPEED = 3;
 const BULLET_COOLDOWN = 200;
 
 module.exports = {
