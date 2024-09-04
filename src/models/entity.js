@@ -5,6 +5,7 @@ const { bullets } = require("../services/gameState");
 
 class Entity {
   constructor(clientId, world) {
+    this.world = world;
     this.clientId = clientId;
     this.position = {
       x: 0,
@@ -29,7 +30,7 @@ class Entity {
     Composite.add(world, this.entityBody);
   }
 
-  applyInput(input) {
+  applyInput(input, world) {
     // Update position
     let xForce = 0;
     let yForce = 0;
@@ -78,7 +79,8 @@ class Entity {
           this.position,
           this.faceDirection,
           bullets.length,
-          this.mousePosition
+          this.mousePosition,
+          world
         );
 
         bullets.push(bullet);

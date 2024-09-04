@@ -6,9 +6,9 @@ let messages = [];
 let lastTime;
 
 // Loop to update the game state
-function setProcessClientMessagesInterval(engine) {
+function setProcessClientMessagesInterval(engine, world) {
   return setInterval(() => {
-    processClientMessages(engine);
+    processClientMessages(engine, world);
 
     updateBullets();
 
@@ -31,12 +31,16 @@ module.exports = {
   setProcessClientMessagesInterval,
 };
 
-function processClientMessages(engine) {
-  while (messages.length > 0) {
-    const message = getMessage();
-    if (message && validateInput(message)) {
-      updateGameState(message, engine);
+function processClientMessages(engine, world) {
+  try {
+    while (messages.length > 0) {
+      const message = getMessage();
+      if (message && validateInput(message)) {
+        updateGameState(message, engine, world);
+      }
     }
+  } catch (err) {
+    console.error(err);
   }
 }
 

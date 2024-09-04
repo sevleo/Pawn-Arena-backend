@@ -1,7 +1,8 @@
 const { BULLET_SPEED } = require("../config/gameConstants");
+const { Bodies, Composite, Body } = require("matter-js");
 
 class Bullet {
-  constructor(entity_id, position, direction, bullet_id, mousePosition) {
+  constructor(entity_id, position, direction, bullet_id, mousePosition, world) {
     this.bullet_id = bullet_id;
     this.entity_id = entity_id;
     this.initialPosition = {
@@ -19,6 +20,17 @@ class Bullet {
     this.speed = BULLET_SPEED;
     this.mousePosition = mousePosition;
     this.newBullet = true;
+
+    this.bulletBody = Bodies.circle(0, 0, 1.5, {
+      label: "bullet",
+      clientId: entity_id,
+      isStatic: false,
+      restitution: 0,
+      friction: 0.5,
+      frictionAir: 0.5,
+    });
+
+    Composite.add(world, this.bulletBody);
   }
 
   updatePosition() {
@@ -30,6 +42,11 @@ class Bullet {
       (this.direction.y /
         Math.sqrt(this.direction.x ** 2 + this.direction.y ** 2)) *
       this.speed;
+
+    Body.setPosition(this.bulletBody, {
+      x: this.serverPosition.x,
+      y: this.serverPosition.y,
+    });
   }
 }
 

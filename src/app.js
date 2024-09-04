@@ -3,7 +3,7 @@ const cors = require("cors");
 const express = require("express");
 const http = require("http");
 const setupWebSocket = require("./ws/webSocket");
-const { Engine } = require("matter-js");
+const { Engine, Events } = require("matter-js");
 const { createWorld } = require("./services/createWorld");
 
 // Run App server
@@ -31,3 +31,26 @@ createWorld(engine, world);
 
 // Run Websocket server
 const webSocket = setupWebSocket(server, world, engine);
+
+Events.on(engine, "collisionStart", function (event) {
+  for (const pair of event.pairs) {
+    if (
+      pair.bodyA.label === "entity" &&
+      pair.bodyB.label === "bullet" &&
+      pair.bodyA.clientId !== pair.bodyB.clientId
+    ) {
+      console.log(
+        `Bullet of entity ${pair.bodyB.clientId} has hit entity ${pair.bodyA.clientId}`
+      );
+    }
+    if (
+      pair.bodyA.label === "bullet" &&
+      pair.bodyB.label === "entity" &&
+      pair.bodyA.clientId !== pair.bodyB.clientId
+    ) {
+      console.log(
+        `Bullet of entity ${pair.bodyA.clientId} has hit entity ${pair.bodyB.clientId}`
+      );
+    }
+  }
+});
