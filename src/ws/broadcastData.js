@@ -3,7 +3,9 @@ const {
   entities,
   bullets,
   last_processed_input,
+  bullet_sequence_number,
 } = require("../services/gameState");
+let { removedBullets } = require("../services/gameState");
 
 // Loop to broadcast the game state
 function setBroadcastWorldStateInterval(wss) {
@@ -28,6 +30,7 @@ function broadcastWorldState(wss) {
     };
   });
   let world_bullets = bullets.map((bullet) => {
+    // console.log(bullet);
     // Store the current value of newBullet
     const isNewBullet = bullet.newBullet;
 
@@ -51,14 +54,23 @@ function broadcastWorldState(wss) {
         y: bullet.direction.y,
       },
       mousePosition: bullet.mousePosition,
-      newBullet: isNewBullet, // Use the stored value
+      newBullet: isNewBullet, // Use the stored value.
+      bullet_sequence_number: bullet.bullet_sequence_number,
+    };
+  });
+  let removed_bullets = removedBullets.map((bullet) => {
+    return {
+      bullet_id: bullet.bullet_id,
     };
   });
 
   let world_state = {
     entities: world_entities,
     bullets: world_bullets,
+    removedBullets: removed_bullets,
   };
+
+  // console.log(world_state);
 
   const worldStateMessage = JSON.stringify({
     type: "world_state",
@@ -69,6 +81,7 @@ function broadcastWorldState(wss) {
   wss.clients.forEach((client) => {
     client.send(worldStateMessage);
   });
+  removedBullets.length = 0;
 }
 
 module.exports = { setBroadcastWorldStateInterval };

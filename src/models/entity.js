@@ -1,7 +1,7 @@
 const { MOVEMENT_SPEED, BULLET_COOLDOWN } = require("../config/gameConstants");
 const { Bodies, Composite, Body } = require("matter-js");
 const Bullet = require("./bullet");
-const { bullets } = require("../services/gameState");
+const { bullets, getNewBulletId } = require("../services/gameState");
 
 class Entity {
   constructor(clientId, world) {
@@ -30,7 +30,7 @@ class Entity {
     Composite.add(world, this.entityBody);
   }
 
-  applyInput(input, world) {
+  applyInput(input, world, bullet_sequence_number) {
     // Update position
     let xForce = 0;
     let yForce = 0;
@@ -74,17 +74,24 @@ class Entity {
         this.lastBulletTimestamp === null || // No bullets have been fired yet
         currentTimestamp - this.lastBulletTimestamp >= BULLET_COOLDOWN // 200ms cooldown
       ) {
+        const newBulletId = getNewBulletId();
+        console.log(bullet_sequence_number);
         const bullet = new Bullet(
           this.clientId,
           this.position,
           this.faceDirection,
-          bullets.length,
+          newBulletId,
+          // bullets.length,
           this.mousePosition,
-          world
+          world,
+          bullet_sequence_number
         );
 
         bullets.push(bullet);
+        // bullets[bullet.bullet_id] = bullet;
         this.lastBulletTimestamp = currentTimestamp; // Update the last bullet timestamp
+
+        console.log(bullet);
       }
     }
   }

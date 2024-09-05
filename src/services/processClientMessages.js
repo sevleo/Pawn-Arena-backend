@@ -1,5 +1,6 @@
 const { Engine, Composite, Detector } = require("matter-js");
 const { updateGameState, bullets } = require("./gameState");
+let { setNewBulletSequenceNumber } = require("./gameState");
 const { GAME_SPEED_RATE } = require("../config/gameConstants");
 
 let messages = [];
@@ -35,6 +36,7 @@ function processClientMessages(engine, world) {
   try {
     while (messages.length > 0) {
       const message = getMessage();
+      setNewBulletSequenceNumber(message.bullet_sequence_number);
       if (message && validateInput(message)) {
         updateGameState(message, engine, world);
       }
