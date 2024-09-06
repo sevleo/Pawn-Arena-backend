@@ -55,8 +55,8 @@ Events.on(engine, "collisionStart", function (event) {
             `Bullet of entity ${pair.bodyB.clientId} has hit entity ${pair.bodyA.clientId}`
           );
           removedBullets.push(removedBullet);
-          console.log(removedBullet);
-          console.log(removedBullets);
+          // console.log(removedBullet);
+          // console.log(removedBullets);
         }
       }
 

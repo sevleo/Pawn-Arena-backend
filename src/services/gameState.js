@@ -21,6 +21,8 @@ function setNewBulletSequenceNumber(val) {
 }
 
 function updateGameState(message, engine, world) {
+  setNewBulletSequenceNumber(message.bullet_sequence_number);
+
   // console.log(message);
   const id = message.entity_id;
   const entity = entities.find((entity) => entity.clientId === id);
