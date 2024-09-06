@@ -75,7 +75,6 @@ class Entity {
         currentTimestamp - this.lastBulletTimestamp >= BULLET_COOLDOWN // 200ms cooldown
       ) {
         const newBulletId = getNewBulletId();
-        console.log(bullet_sequence_number);
         const bullet = new Bullet(
           this.clientId,
           this.position,
@@ -87,11 +86,9 @@ class Entity {
           bullet_sequence_number
         );
 
-        bullets.push(bullet);
-        // bullets[bullet.bullet_id] = bullet;
+        // bullets.push(bullet);
+        bullets.set(bullet.bullet_id, bullet);
         this.lastBulletTimestamp = currentTimestamp; // Update the last bullet timestamp
-
-        console.log(bullet);
       }
     }
   }

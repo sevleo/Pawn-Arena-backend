@@ -4,10 +4,10 @@ const Client = require("../models/client");
 
 function createClientAndEntity(ws, world) {
   const client = new Client(ws);
-  gameState.clients.push(client);
+  gameState.clients.set(client.clientId, client);
 
   const entity = new Entity(ws.clientId, world);
-  gameState.entities.push(entity);
+  gameState.entities.set(entity.clientId, entity);
 }
 
 module.exports = { createClientAndEntity };

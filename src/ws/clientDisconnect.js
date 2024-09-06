@@ -1,18 +1,12 @@
 const gameState = require("../services/gameState");
 
 function handleClientDisconnection(ws) {
-  const clientIndex = gameState.clients.findIndex(
-    (client) => client.clientId === ws.clientId
-  );
-  if (clientIndex !== -1) {
-    gameState.clients.splice(clientIndex, 1);
+  if (gameState.clients.has(ws.clientId)) {
+    gameState.clients.delete(ws.clientId);
   }
 
-  const entityIndex = gameState.entities.findIndex(
-    (entity) => entity.clientId === ws.clientId
-  );
-  if (entityIndex !== -1) {
-    gameState.entities.splice(entityIndex, 1);
+  if (gameState.entities.has(ws.clientId)) {
+    gameState.entities.delete(ws.clientId);
   }
 
   console.log(`Client ${ws.clientId} disconnected`);

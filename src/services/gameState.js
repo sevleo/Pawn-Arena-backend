@@ -1,10 +1,10 @@
 let nextClientId = 0;
 let nextBulletId = 0;
-let clients = [];
-let entities = [];
+let clients = new Map();
+let entities = new Map();
 let last_processed_input = {};
-let bullets = [];
-let removedBullets = [];
+let bullets = new Map();
+let removedBullets = new Map();
 let bullet_sequence_number = null;
 
 function getNewClientId() {
@@ -22,44 +22,13 @@ function setNewBulletSequenceNumber(val) {
 
 function updateGameState(message, engine, world) {
   setNewBulletSequenceNumber(message.bullet_sequence_number);
-
-  // console.log(message);
   const id = message.entity_id;
-  const entity = entities.find((entity) => entity.clientId === id);
+  const entity = entities.get(id);
+  // const entity = entities.find((entity) => entity.clientId === id);
   if (entity) {
     entity.applyInput(message, world, bullet_sequence_number);
     last_processed_input[id] = message.input_sequence_number;
   }
-
-  // Collisions are handled by listening to Matter.Events
-  // if (engine.detector.collisions.length > 0) {
-  //   engine.detector.collisions.forEach((collision) => {
-  //     // console.log(collision.bodyA);
-  //     // console.log(collision.bodyB);
-  //     // console.log(collision);
-  //     if (
-  //       collision.bodyA.label === "entity" &&
-  //       collision.bodyB.label === "bullet"
-  //     ) {
-  //       // console.log(collision);
-  //       // console.log(collision.bodyA);
-  //       // console.log(collision.bodyB);
-  //       // console.log(
-  //       //   `Bullet of entity ${collision.bodyA.clientId} has hit entity ${collision.bodyB.clientId}`
-  //       // );
-  //     }
-  //     if (
-  //       collision.bodyA.label === "bullet" &&
-  //       collision.bodyB.label === "entity"
-  //     ) {
-  //       // console.log(collision);
-  //       // console.log(collision.bodyA);
-  //       // console.log(
-  //       //   `Bullet of entity ${collision.bodyA.clientId} has hit entity ${collision.bodyB.clientId}`
-  //       // );
-  //     }
-  //   });
-  // }
 }
 
 module.exports = {

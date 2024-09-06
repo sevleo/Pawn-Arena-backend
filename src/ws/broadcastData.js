@@ -16,12 +16,10 @@ function setBroadcastWorldStateInterval(wss) {
 
 function broadcastWorldState(wss) {
   // Send the world state to all the connected clients.
-  let world_entities = entities.map((entity) => {
+  let world_entities = Array.from(entities.values()).map((entity) => {
     return {
       entity_id: entity.clientId,
       position: {
-        // x: entity.entityBody.position.x,
-        // y: entity.entityBody.position.y,
         x: entity.position.x,
         y: entity.position.y,
       },
@@ -29,8 +27,7 @@ function broadcastWorldState(wss) {
       last_processed_input: last_processed_input[entity.clientId] || null,
     };
   });
-  let world_bullets = bullets.map((bullet) => {
-    // console.log(bullet);
+  let world_bullets = Array.from(bullets.values()).map((bullet) => {
     // Store the current value of newBullet
     const isNewBullet = bullet.newBullet;
 
@@ -58,7 +55,7 @@ function broadcastWorldState(wss) {
       bullet_sequence_number: bullet.bullet_sequence_number,
     };
   });
-  let removed_bullets = removedBullets.map((bullet) => {
+  let removed_bullets = Array.from(removedBullets.values()).map((bullet) => {
     return {
       bullet_id: bullet.bullet_id,
       bullet_sequence_number: bullet.bullet_sequence_number,
@@ -82,7 +79,7 @@ function broadcastWorldState(wss) {
   wss.clients.forEach((client) => {
     client.send(worldStateMessage);
   });
-  removedBullets.length = 0;
+  removedBullets.clear();
 }
 
 module.exports = { setBroadcastWorldStateInterval };
