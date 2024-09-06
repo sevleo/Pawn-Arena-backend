@@ -29,7 +29,15 @@ function setupWebSocket(server, world, engine) {
     });
 
     ws.on("close", () => {
-      handleClientDisconnection(ws);
+      handleClientDisconnection(ws, world);
+      const message = JSON.stringify({
+        type: "disconnect",
+        entity_id: ws.clientId,
+      });
+
+      wss.clients.forEach((client) => {
+        client.send(message);
+      });
     });
   });
 
