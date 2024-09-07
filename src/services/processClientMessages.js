@@ -10,7 +10,7 @@ function setProcessClientMessagesInterval(engine, world) {
   return setInterval(() => {
     processClientMessages(engine, world);
 
-    updateBullets();
+    updateBullets(world);
 
     const now = Date.now();
     const delta = now - lastTime;
@@ -20,9 +20,9 @@ function setProcessClientMessagesInterval(engine, world) {
   }, GAME_SPEED_RATE);
 }
 
-function updateBullets() {
+function updateBullets(world) {
   bullets.forEach((bullet) => {
-    bullet.updatePosition();
+    bullet.updatePosition(world);
   });
 }
 

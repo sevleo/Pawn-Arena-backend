@@ -1,5 +1,10 @@
-const { BULLET_SPEED } = require("../config/gameConstants");
+const {
+  BULLET_SPEED,
+  CANVAS_HEIGHT,
+  CANVAS_WIDTH,
+} = require("../config/gameConstants");
 const { Bodies, Composite, Body } = require("matter-js");
+const { bullets, removedBullets } = require("../services/gameState");
 
 class Bullet {
   constructor(
@@ -43,7 +48,7 @@ class Bullet {
     Composite.add(world, this.bulletBody);
   }
 
-  updatePosition() {
+  updatePosition(world) {
     this.serverPosition.x +=
       (this.direction.x /
         Math.sqrt(this.direction.x ** 2 + this.direction.y ** 2)) *
@@ -57,6 +62,17 @@ class Bullet {
       x: this.serverPosition.x,
       y: this.serverPosition.y,
     });
+
+    if (
+      this.serverPosition.x < 0 ||
+      this.serverPosition.x > CANVAS_WIDTH ||
+      this.serverPosition.y < 0 ||
+      this.serverPosition > CANVAS_HEIGHT
+    ) {
+      Composite.remove(world, this.bulletBody);
+      bullets.delete(this.bullet_id);
+      removedBullets.set(this.bullet_id, this);
+    }
   }
 }
 
