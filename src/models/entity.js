@@ -20,8 +20,9 @@ class Entity {
     };
     this.speed = MOVEMENT_SPEED;
     this.lastBulletTimestamp = null;
+    this.health = 5;
 
-    this.entityBody = Bodies.circle(0, 0, 10, {
+    this.entityBody = Bodies.circle(this.position.x, this.position.y, 10, {
       label: "entity",
       clientId: clientId,
       isStatic: false,
