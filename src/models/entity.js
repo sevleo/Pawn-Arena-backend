@@ -13,10 +13,7 @@ class Entity {
   constructor(clientId, world) {
     this.world = world;
     this.clientId = clientId;
-    this.position = {
-      x: 0,
-      y: 0,
-    };
+    this.position = generateRandomPosition();
     this.faceDirection = {
       x: 0,
       y: 0,
@@ -102,6 +99,13 @@ class Entity {
       }
     }
   }
+}
+
+function generateRandomPosition() {
+  // Generate random x and y positions, ensuring the pawn stays within canvas bounds
+  const x = Math.random() * (CANVAS_WIDTH - RADIUS);
+  const y = Math.random() * (CANVAS_HEIGHT - RADIUS);
+  return { x, y };
 }
 
 module.exports = Entity;
