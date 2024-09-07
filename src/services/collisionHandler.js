@@ -10,9 +10,8 @@ function handleCollisions(engine, world) {
           pair.bodyB.label === "bullet" &&
           pair.bodyA.clientId !== pair.bodyB.clientId
         ) {
-          let removedBullet;
           if (bullets.has(pair.bodyB.bulletId)) {
-            removedBullet = bullets.get(pair.bodyB.bulletId);
+            const removedBullet = bullets.get(pair.bodyB.bulletId);
             Composite.remove(world, removedBullet.bulletBody);
             bullets.delete(pair.bodyB.bulletId);
             // removedBullets.push(removedBullet);
