@@ -1,4 +1,10 @@
-const { MOVEMENT_SPEED, BULLET_COOLDOWN } = require("../config/gameConstants");
+const {
+  MOVEMENT_SPEED,
+  BULLET_COOLDOWN,
+  CANVAS_HEIGHT,
+  CANVAS_WIDTH,
+  RADIUS,
+} = require("../config/gameConstants");
 const { Bodies, Composite, Body } = require("matter-js");
 const Bullet = require("./bullet");
 const { bullets, getNewBulletId } = require("../services/gameState");
@@ -32,32 +38,36 @@ class Entity {
 
   applyInput(input, world, bullet_sequence_number) {
     // Update position
-    let xForce = 0;
-    let yForce = 0;
-    if (input.active_keys.right) xForce = this.speed * input.press_time;
-    if (input.active_keys.left) xForce = -this.speed * input.press_time;
-    if (input.active_keys.up) yForce = -this.speed * input.press_time;
-    if (input.active_keys.down) yForce = this.speed * input.press_time;
-    if (xForce !== 0 || yForce !== 0) {
+    let xChange = 0;
+    let yChange = 0;
+    if (input.active_keys.right) xChange = this.speed * input.press_time;
+    if (input.active_keys.left) xChange = -this.speed * input.press_time;
+    if (input.active_keys.up) yChange = -this.speed * input.press_time;
+    if (input.active_keys.down) yChange = this.speed * input.press_time;
+
+    if (xChange !== 0 || yChange !== 0) {
       const diagonalFactor = 0.7071; // Approximation of 1/√2 for 45-degree movement
-      if (xForce !== 0 && yForce !== 0) {
-        xForce *= diagonalFactor;
-        yForce *= diagonalFactor;
+      if (xChange !== 0 && yChange !== 0) {
+        xChange *= diagonalFactor;
+        yChange *= diagonalFactor;
       }
-      // Update the position of the entity
-      this.position.x += xForce;
-      this.position.y += yForce;
-      // Apply force to the body
-      // Body.applyForce(this.entityBody, this.entityBody.position, {
-      //   x: xForce,
-      //   y: yForce,
-      // });
+
+      // Calculate the new position before applying it
+      const newX = this.position.x + xChange;
+      const newY = this.position.y + yChange;
+
+      // Boundary checks to ensure entity stays within canvas width and height
+      const clampedX = Math.max(RADIUS, Math.min(newX, CANVAS_WIDTH - RADIUS));
+      const clampedY = Math.max(RADIUS, Math.min(newY, CANVAS_HEIGHT - RADIUS));
+
+      // Update the position of the entity based on the clamped values
+      this.position.x = clampedX;
+      this.position.y = clampedY;
+
       Body.setPosition(this.entityBody, {
         x: this.position.x,
         y: this.position.y,
       });
-
-      // }
     }
 
     this.mousePosition = { x: input.mousePosition.x, y: input.mousePosition.y };
