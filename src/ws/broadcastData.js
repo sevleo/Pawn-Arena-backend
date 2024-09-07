@@ -55,6 +55,7 @@ function broadcastWorldState(wss) {
       bullet_sequence_number: bullet.bullet_sequence_number,
     };
   });
+
   let removed_bullets = Array.from(removedBullets.values()).map((bullet) => {
     return {
       bullet_id: bullet.bullet_id,

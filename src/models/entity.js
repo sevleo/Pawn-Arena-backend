@@ -7,11 +7,17 @@ const {
 } = require("../config/gameConstants");
 const { Bodies, Composite, Body } = require("matter-js");
 const Bullet = require("./bullet");
-const { bullets, getNewBulletId } = require("../services/gameState");
+const {
+  bullets,
+  getNewBulletId,
+  entities,
+  getNewEntityId,
+} = require("../services/gameState");
 
 class Entity {
   constructor(clientId, world) {
     this.world = world;
+    this.entityId = getNewEntityId();
     this.clientId = clientId;
     this.position = generateRandomPosition();
     this.faceDirection = {
@@ -94,12 +100,19 @@ class Entity {
           bullet_sequence_number
         );
 
+        console.log(bullet);
+
         // bullets.push(bullet);
         bullets.set(bullet.bullet_id, bullet);
         this.lastBulletTimestamp = currentTimestamp; // Update the last bullet timestamp
       }
     }
   }
+}
+
+function createEntity(ws, world) {
+  const entity = new Entity(ws.clientId, world);
+  entities.set(entity.clientId, entity);
 }
 
 function generateRandomPosition() {
@@ -109,4 +122,4 @@ function generateRandomPosition() {
   return { x, y };
 }
 
-module.exports = Entity;
+module.exports = { createEntity };

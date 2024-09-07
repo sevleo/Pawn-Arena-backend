@@ -5,8 +5,9 @@ const {
   setProcessClientMessagesInterval,
 } = require("../services/processClientMessages");
 const handleClientMessage = require("./clientMessage");
-const { createClientAndEntity } = require("./clientConnect");
+const { createClient } = require("./clientConnect");
 const { handleClientDisconnection } = require("./clientDisconnect");
+const { createEntity } = require("../models/entity");
 
 function setupWebSocket(server, world, engine) {
   const wss = new WebSocket.Server({ server });
@@ -19,13 +20,15 @@ function setupWebSocket(server, world, engine) {
   wss.on("connection", (ws) => {
     ws.clientId = getNewClientId();
     console.log(`Client ${ws.clientId} connected`);
-    createClientAndEntity(ws, world);
+
+    createClient(ws);
+    // createEntity(ws, world);
 
     // Send the clientId to the client
     ws.send(JSON.stringify({ type: "connection", clientId: ws.clientId }));
 
     ws.on("message", (message) => {
-      handleClientMessage(message, ws);
+      handleClientMessage(message, ws, world);
     });
 
     ws.on("close", () => {
