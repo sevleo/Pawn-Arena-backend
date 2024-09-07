@@ -12,7 +12,7 @@ function handleClientDisconnection(ws, world) {
     gameState.entities.delete(ws.clientId);
 
     for (const [bulletId, bullet] of gameState.bullets) {
-      if (bullet.entity_id === ws.clientId) {
+      if (bullet.clientId === ws.clientId) {
         const removedBullet = gameState.bullets.get(bulletId);
         Composite.remove(world, removedBullet.bulletBody);
         gameState.bullets.delete(bulletId);

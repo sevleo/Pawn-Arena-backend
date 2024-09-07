@@ -21,8 +21,8 @@ function setupWebSocket(server, world, engine) {
     console.log(`Client ${ws.clientId} connected`);
     createClientAndEntity(ws, world);
 
-    // Send the entity_id to the client
-    ws.send(JSON.stringify({ type: "connection", entity_id: ws.clientId }));
+    // Send the clientId to the client
+    ws.send(JSON.stringify({ type: "connection", clientId: ws.clientId }));
 
     ws.on("message", (message) => {
       handleClientMessage(message, ws);
@@ -32,7 +32,7 @@ function setupWebSocket(server, world, engine) {
       handleClientDisconnection(ws, world);
       const message = JSON.stringify({
         type: "disconnect",
-        entity_id: ws.clientId,
+        clientId: ws.clientId,
       });
 
       wss.clients.forEach((client) => {

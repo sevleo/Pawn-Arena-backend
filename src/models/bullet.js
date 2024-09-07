@@ -8,7 +8,7 @@ const { bullets, removedBullets } = require("../services/gameState");
 
 class Bullet {
   constructor(
-    entity_id,
+    clientId,
     position,
     direction,
     bullet_id,
@@ -17,7 +17,7 @@ class Bullet {
     bullet_sequence_number
   ) {
     this.bullet_id = bullet_id;
-    this.entity_id = entity_id;
+    this.clientId = clientId;
     this.initialPosition = {
       x: position.x,
       y: position.y,
@@ -37,7 +37,7 @@ class Bullet {
 
     this.bulletBody = Bodies.circle(0, 0, 1.5, {
       label: "bullet",
-      clientId: entity_id,
+      clientId: clientId,
       bulletId: bullet_id,
       isStatic: false,
       restitution: 0,

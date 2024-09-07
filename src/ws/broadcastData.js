@@ -3,7 +3,7 @@ const {
   entities,
   bullets,
   last_processed_input,
-  bullet_sequence_number,
+  deadEntities,
 } = require("../services/gameState");
 let { removedBullets } = require("../services/gameState");
 
@@ -18,7 +18,7 @@ function broadcastWorldState(wss) {
   // Send the world state to all the connected clients.
   let world_entities = Array.from(entities.values()).map((entity) => {
     return {
-      entity_id: entity.clientId,
+      clientId: entity.clientId,
       position: {
         x: entity.position.x,
         y: entity.position.y,
@@ -37,7 +37,7 @@ function broadcastWorldState(wss) {
     // Return the bullet object with the original value of newBullet
     return {
       bullet_id: bullet.bullet_id,
-      entity_id: bullet.entity_id,
+      clientId: bullet.clientId,
       initialPosition: {
         x: bullet.initialPosition.x,
         y: bullet.initialPosition.y,
@@ -62,10 +62,19 @@ function broadcastWorldState(wss) {
     };
   });
 
+  let dead_entities = Array.from(deadEntities.values()).map((entity) => {
+    // console.log(entity);
+    // console.log(deadEntities);
+    return {
+      clientId: entity.clientId,
+    };
+  });
+
   let world_state = {
     entities: world_entities,
     bullets: world_bullets,
     removedBullets: removed_bullets,
+    deadEntities: dead_entities,
   };
 
   // console.log(world_state);
