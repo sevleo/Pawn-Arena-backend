@@ -12,13 +12,11 @@ const { createEntity } = require("../models/entity");
 function setupWebSocket(server, world, engine) {
   const wss = new WebSocket.Server({ server });
   console.log("Start Websocket server");
-  console.log(world);
 
   setProcessClientMessagesInterval(engine, world); // Loop to update the game state
   setBroadcastWorldStateInterval(wss); // Loop to broadcast the game state
 
   wss.on("connection", (ws) => {
-    console.log("test connection");
     ws.clientId = getNewClientId();
     console.log(`Client ${ws.clientId} connected`);
 

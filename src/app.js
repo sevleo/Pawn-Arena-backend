@@ -32,6 +32,5 @@ createWorld(engine, world);
 
 // Run Websocket server
 const webSocket = setupWebSocket(server, world, engine);
-console.log("connected ws");
 
 handleCollisions(engine, world, webSocket);

@@ -29,12 +29,11 @@ function handleCollisions(engine, world, wss) {
             bullets.delete(bullet.bulletId);
             removedBullets.set(removedBullet.bullet_id, removedBullet);
             entities.get(entity.clientId).health--;
-            console.log(entities.get(entity.clientId).health);
-            console.log(
-              `Bullet of entity ${bullet.clientId} has hit entity ${entity.clientId}`
-            );
+            // console.log(
+            //   `Bullet of entity ${bullet.clientId} has hit entity ${entity.clientId}`
+            // );
             if (entities.get(entity.clientId).health <= 0) {
-              console.log(`${entity.clientId} is dead.`);
+              // console.log(`${entity.clientId} is dead.`);
               Composite.remove(world, entity);
               deadEntities.set(
                 entities.get(entity.clientId).entityId,

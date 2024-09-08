@@ -94,15 +94,11 @@ class Entity {
           this.position,
           this.faceDirection,
           newBulletId,
-          // bullets.length,
           this.mousePosition,
           world,
           bullet_sequence_number
         );
 
-        console.log(bullet);
-
-        // bullets.push(bullet);
         bullets.set(bullet.bullet_id, bullet);
         this.lastBulletTimestamp = currentTimestamp; // Update the last bullet timestamp
       }

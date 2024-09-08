@@ -35,8 +35,6 @@ function processClientMessages(engine, world) {
   try {
     while (messages.length > 0) {
       const message = getMessage();
-      // console.log(message);
-      // setNewBulletSequenceNumber(message.bullet_sequence_number);
       if (message && validateInput(message)) {
         updateGameState(message, engine, world);
       }
