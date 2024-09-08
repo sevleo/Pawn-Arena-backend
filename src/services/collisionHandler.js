@@ -40,6 +40,11 @@ function handleCollisions(engine, world, wss) {
                 entities.get(entity.clientId).entityId,
                 entities.get(entity.clientId)
               );
+              // Check if the map size exceeds 15
+              if (deadEntities.size > 15) {
+                const oldestKey = deadEntities.keys().next().value; // Get the first (oldest) key
+                deadEntities.delete(oldestKey); // Remove the oldest entry
+              }
 
               wss.clients.forEach((client) => {
                 client.send(

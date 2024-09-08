@@ -17,8 +17,10 @@ function setBroadcastWorldStateInterval(wss) {
 function broadcastWorldState(wss) {
   // Send the world state to all the connected clients.
   let world_entities = Array.from(entities.values()).map((entity) => {
+    // console.log(entity);
     return {
       clientId: entity.clientId,
+      entityId: entity.entityId,
       position: {
         x: entity.position.x,
         y: entity.position.y,
@@ -69,6 +71,8 @@ function broadcastWorldState(wss) {
     return {
       clientId: entity.clientId,
       entityId: entity.entityId,
+      position: entity.position,
+      faceDirection: entity.faceDirection,
     };
   });
 
