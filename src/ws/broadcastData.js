@@ -21,6 +21,7 @@ function broadcastWorldState(wss) {
     return {
       clientId: entity.clientId,
       entityId: entity.entityId,
+      health: entity.health,
       position: {
         x: entity.position.x,
         y: entity.position.y,
