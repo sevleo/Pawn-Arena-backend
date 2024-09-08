@@ -113,6 +113,7 @@ class Entity {
 function createEntity(ws, world) {
   const entity = new Entity(ws.clientId, world);
   entities.set(entity.clientId, entity);
+  ws.send(JSON.stringify({ type: "newEntityId", entityId: entity.entityId }));
 }
 
 function generateRandomPosition() {

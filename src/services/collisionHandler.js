@@ -6,7 +6,7 @@ const {
   deadEntities,
 } = require("./gameState");
 
-function handleCollisions(engine, world) {
+function handleCollisions(engine, world, wss) {
   try {
     Events.on(engine, "collisionStart", function (event) {
       for (const pair of event.pairs) {
@@ -35,9 +35,27 @@ function handleCollisions(engine, world) {
             );
             if (entities.get(entity.clientId).health <= 0) {
               console.log(`${entity.clientId} is dead.`);
-              Composite.remove(world, entities.get(entity.clientId).entityBody);
-              deadEntities.set(entity.clientId, entities.get(entity.clientId));
+              Composite.remove(world, entity);
+              deadEntities.set(
+                entities.get(entity.clientId).entityId,
+                entities.get(entity.clientId)
+              );
+
+              wss.clients.forEach((client) => {
+                client.send(
+                  JSON.stringify({
+                    type: "entityDestroyed",
+                    entityId: entities.get(entity.clientId).entityId,
+                  })
+                );
+              });
               entities.delete(entity.clientId);
+              // ws.send(
+              // JSON.stringify({
+              //   type: "entityDestroyed",
+              //   entityId: entity.entityId,
+              // })
+              // );
             }
           }
         }

@@ -68,6 +68,7 @@ function broadcastWorldState(wss) {
     // console.log(deadEntities);
     return {
       clientId: entity.clientId,
+      entityId: entity.entityId,
     };
   });
 
