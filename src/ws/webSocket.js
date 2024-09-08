@@ -18,6 +18,7 @@ function setupWebSocket(server, world, engine) {
   setBroadcastWorldStateInterval(wss); // Loop to broadcast the game state
 
   wss.on("connection", (ws) => {
+    console.log("test connection");
     ws.clientId = getNewClientId();
     console.log(`Client ${ws.clientId} connected`);
 
