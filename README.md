@@ -1,5 +1,3 @@
-# TaggingGame-backend
+# Pawn Arena - backend
 
-This is the backend for https://github.com/sevleo/TaggingGame-frontend
-
-submodule
+Backend for [Pawn Arena](https://github.com/sevleo/Pawn-Arena).
